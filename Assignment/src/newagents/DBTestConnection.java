@@ -8,11 +8,13 @@ public class DBTestConnection {
 
     public static void main(String[] args) {
         try  {
-        	DatabaseConnection.getConnection();
+        	Connection conn = DatabaseConnection.getConnection();
             System.out.println("Database connected successfully!");
+            
         } catch (SQLException e) {
             System.out.println("Database connection failed!");
             e.printStackTrace();
         }
+        
     }
 }

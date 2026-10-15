@@ -1,0 +1,74 @@
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+
+public class CustomerTest {
+
+    @Test
+    public void testCustomerConstructor() {
+        Customer customer = new Customer(
+            1, "John Smith", "Main Street", "0871234567"
+        );
+
+        assertEquals(1, customer.getCustomerId());
+        assertEquals("John Smith", customer.getName());
+        assertEquals("Main Street", customer.getAddress());
+        assertEquals("0871234567", customer.getPhoneNumber());
+    }
+
+    @Test
+    public void testSetCustomerId() {
+        Customer customer = new Customer(
+            1, "John Smith", "Main Street", "0871234567"
+        );
+
+        customer.setCustomerId(2);
+
+        assertEquals(2, customer.getCustomerId());
+    }
+
+    @Test
+    public void testSetName() {
+        Customer customer = new Customer(
+            1, "John Smith", "Main Street", "0871234567"
+        );
+
+        customer.setName("Jane Smith");
+
+        assertEquals("Jane Smith", customer.getName());
+    }
+
+    @Test
+    public void testSetAddress() {
+        Customer customer = new Customer(
+            1, "John Smith", "Main Street", "0871234567"
+        );
+
+        customer.setAddress("High Street");
+
+        assertEquals("High Street", customer.getAddress());
+    }
+
+    @Test
+    public void testSetPhoneNumber() {
+        Customer customer = new Customer(
+            1, "John Smith", "Main Street", "0871234567"
+        );
+
+        customer.setPhoneNumber("0869876543");
+
+        assertEquals("0869876543", customer.getPhoneNumber());
+    }
+
+    @Test
+    public void testToString() {
+        Customer customer = new Customer(
+            1, "John Smith", "Main Street", "0871234567"
+        );
+
+        String details = customer.toString();
+
+        assertTrue(details.contains("John Smith"));
+        assertTrue(details.contains("Main Street"));
+        assertTrue(details.contains("0871234567"));
+    }
+}

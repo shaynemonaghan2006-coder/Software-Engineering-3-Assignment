@@ -2,7 +2,7 @@ CREATE DATABASE IF NOT EXISTS newsagents_db;
 USE newsagents_db;
 
 -- Drop tables in dependency order
-DROP TABLE IF EXISTS customer_order;
+DROP TABLE IF EXISTS order_item;
 DROP TABLE IF EXISTS customer;
 DROP TABLE IF EXISTS delivery_area;
 
@@ -20,11 +20,11 @@ CREATE TABLE customer (
     firstName VARCHAR(50) NOT NULL,
     surname VARCHAR(50) NOT NULL,
     address VARCHAR(150) NOT NULL,
-    phoneNumber VARCHAR(20) NOT NULL,
-    deliveryAreaId INT NOT NULL,
+    phoneNumber VARCHAR(20) NOT NULL
+    -- deliveryAreaId INT NOT NULL,
 
-    FOREIGN KEY (deliveryAreaId)
-        REFERENCES delivery_area(deliveryAreaId)
+    -- FOREIGN KEY (deliveryAreaId)
+--         REFERENCES delivery_area(deliveryAreaId)
 );
 
 -- Products belonging to each order
@@ -33,7 +33,7 @@ CREATE TABLE order_item (
     orderDate VARCHAR(20) NOT NULL,
     productName VARCHAR(50) NOT NULL,
     quantity INT NOT NULL,
-    price VARCHAR(20),
+    price VARCHAR(20) NOT NULL,
     customerId INT NOT NULL,
     
     CHECK (quantity > 0),
@@ -42,15 +42,11 @@ CREATE TABLE order_item (
 		REFERENCES customer(customerId)
 );
 
--- Delivery Docket
-CREATE TABLE delivery_docket (
-    docketId INT AUTO_INCREMENT PRIMARY KEY,
-    orderId INT NOT NULL,
-    deliveryDate DATE NOT NULL,
-    deliveryStatus VARCHAR(20) NOT NULL,
+select * from order_item;
 
-    FOREIGN KEY (orderId)
-        REFERENCES order_item(orderId),
-
-
-);
+INSERT INTO customer
+    (firstName, surname,address,phoneNumber)
+VALUES
+    ('John', 'Smith', 'Main Street', '0871234567');
+    
+select * from customer;

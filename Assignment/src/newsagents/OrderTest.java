@@ -1,4 +1,4 @@
-package newagents;
+package newsagents;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
@@ -98,37 +98,7 @@ public class OrderTest {
 		assertFalse(order.verifyOrderDate("12Oct2026"));
 	}
 	
-	// TC09
-	// Test Objective: Verify address is accepted when exactly 1 character long
-	// Input(s): Address = "A"
-	// Expected Output(s): Address accepted
-	@Test
-	void validAddressMinBoundary_TC09() {
-		Order order = new Order();
-		assertTrue(order.verifyAddress("A"));
-	}
-
-	// TC10
-	// Test Objective: Verify address is accepted when more than 1 character
-	// Input(s): Address = "Main Street"
-	// Expected Output(s): Address accepted
-	@Test
-	void validAddress_TC10() {
-		Order order = new Order();;
-		assertTrue(order.verifyAddress("Main Street"));
-	}
-
-	// TC11
-	// Test Objective: Verify address is rejected when blank
-	// Input(s): Address = ""
-	// Expected Output(s): Error message: Invalid Address
-	@Test
-	void invalidAddressBlank_TC11() {
-		Order order = new Order();
-		assertFalse(order.verifyAddress(""));
-	}
-	
-//	Tc12
+//	Tc09
 //	Verify product quantity is accepted when it is integer that is exactly 1
 //	Product Quantity= 1
 //	Product Quantity accepted
@@ -138,7 +108,7 @@ public class OrderTest {
 		assertTrue(order.verifyQuantity(1));
 	}
 	
-//	Tc13
+//	Tc10
 //	Verify product quantity is accepted when it is integer that is > 1
 //	Product Quantity= 10
 //	Product Quantity accepted
@@ -148,7 +118,7 @@ public class OrderTest {
 		assertTrue(order.verifyQuantity(10));
 	}
 	
-//	Tc14
+//	Tc11
 //	Verify product quantity is rejected when it is 0
 //	Product Quantity= 0
 //	Product Quantity rejected
@@ -158,7 +128,7 @@ public class OrderTest {
 		assertFalse(order.verifyQuantity(0));
 	}
 
-//	TC15
+//	TC12
 //	Verify product price is accepted when it is greater than 0.00
 //	Product price = 1.00	
 //	Product Price Accepted
@@ -168,7 +138,7 @@ public class OrderTest {
 		assertTrue(order.verifyPrice("1.00"));
 	}
 	
-//	TC16
+//	TC13
 //	Verify product price is rejected when it is 0.00
 //	Product price = 0.00
 //	Product Price Rejected
@@ -178,7 +148,7 @@ public class OrderTest {
 		assertFalse(order.verifyPrice("0.00"));
 	}
 	
-//	TC17
+//	TC14
 //	Verify product price is accepted with exactly 2 numbers after the decimal point
 //	Product price = 1.55
 //	Product Price Rejected
@@ -188,7 +158,7 @@ public class OrderTest {
 		assertTrue(order.verifyPrice("1.55"));
 	}
 	
-//	TC18
+//	TC15
 //	Verify product price is rejected with 1 number after the decimal point
 //	Product price = 1.1	
 //	Product Price Rejected
@@ -198,7 +168,7 @@ public class OrderTest {
 		assertFalse(order.verifyPrice("1.1"));
 	}
 	
-//	TC19
+//	TC16
 //	Verify product price is rejected with 1 number after the decimal point
 //	Product price = 1.123	
 //	Product Price Rejected
@@ -208,7 +178,7 @@ public class OrderTest {
 		assertFalse(order.verifyPrice("1.123"));
 	}
 	
-//	TC20
+//	TC17
 //	Verify price * quantity returns total price
 //	Price * quantity = 2.55 * 3
 //	Total price = 7.65
@@ -219,64 +189,53 @@ public class OrderTest {
 	    assertEquals(7.65, order.totalPrice(3, "2.55"), 0.001);
 	}
 	
-//  TC21
+//  TC18
 //	Verify order is created when all details are valid
 //	12102026, Sun, 5, 1.50, Main Street
 //	Order created successfully
 	@Test
 	void validOrder_TC21() {
 		Order order = new Order();
-		assertTrue(order.createOrder("12102026", "Sun", 5, "1.50", "Main Street"));
+		assertTrue(order.createOrder("12102026", "Sun", 5, "1.50"));
 	}
 	
-//  TC22
+//  TC19
 //	Verify order creation fails when order date is invalid
 //	"", Sun, 5, 1.50, Main Street
 //	Order not created
 	@Test
 	void invalidOrderNoDate_TC22() {
 		Order order = new Order();
-		assertFalse(order.createOrder("", "Sun", 5, "1.50", "Main Street"));
+		assertFalse(order.createOrder("", "Sun", 5, "1.50"));
 	}
 	
-//  TC23
+//  TC20
 //	Verify order creation fails when product name is invalid
 //	12102026, "", 5, 1.50, Main Street
 //	Order not created
 	@Test
 	void invalidOrderNoName_TC23() {
 		Order order = new Order();
-		assertFalse(order.createOrder("12102026", "", 5, "1.50", "Main Street"));
+		assertFalse(order.createOrder("12102026", "", 5, "1.50"));
 	}
 	
-//  TC24
+//  TC21
 //	Verify order creation fails when product quantity is invalid
 //	12102026, Sun, 0, 1.50, Main Street
 //	Order not created
 	@Test
 	void invalidOrderInvalidQty_TC24() {
 		Order order = new Order();
-		assertFalse(order.createOrder("12102026", "Sun", 0, "1.50", "Main Street"));
+		assertFalse(order.createOrder("12102026", "Sun", 0, "1.50"));
 	}
 	
-//  TC25
+//  TC22
 //	Verify order creation fails when product price is invalid
 //	12102026, Sun, 5, 1.1, Main Street
 //	Order not created
 	@Test
 	void invalidOrderInvalidPrice_TC25() {
 		Order order = new Order();
-		assertFalse(order.createOrder("12102026", "Sun", 5, "1.1", "Main Street"));
+		assertFalse(order.createOrder("12102026", "Sun", 5, "1.1"));
 	}
-	
-//  TC26
-//	Verify order creation fails when address is invalid
-//	12102026, Sun, 5, 1.50, ""
-//	Order not created
-	@Test
-	void invalidOrderInvalidAddress_TC26() {
-		Order order = new Order();
-		assertFalse(order.createOrder("12102026", "Sun", 5, "1.50", ""));
-	}
-	
 }

@@ -1,4 +1,4 @@
-package newagents;
+package newsagents;
 
 import java.sql.*;
 

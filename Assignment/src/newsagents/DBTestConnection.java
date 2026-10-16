@@ -1,5 +1,5 @@
 
-package newagents;
+package newsagents;
 
 import java.sql.Connection;
 import java.sql.SQLException;

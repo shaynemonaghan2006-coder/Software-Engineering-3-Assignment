@@ -1,4 +1,4 @@
-package newagents;
+package newsagents;
 
 public class Customer {
     private int customerId;

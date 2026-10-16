@@ -14,19 +14,22 @@ public class OrderDAO {
 		try (Connection conn = DatabaseConnection.getConnection();
 
 			PreparedStatement stmt = conn.prepareStatement(INSERT_ORDER)) {
+			
+			if(order.createOrder(order.getOrderDate(),order.getProductName(),order.getQuantity(),order.getPrice(),order.getCustId())) {
+				stmt.setString(1, order.getOrderDate() );
 
-			stmt.setString(1, order.getOrderDate() );
+				stmt.setString(2, order.getProductName());
 
-			stmt.setString(2, order.getProductName());
+				stmt.setInt(3, order.getQuantity());
 
-			stmt.setInt(3, order.getQuantity());
+				stmt.setString(4, order.getPrice());
 
-			stmt.setString(4, order.getPrice());
-
-			stmt.setInt(5, order.getCustId());
+				stmt.setInt(5, order.getCustId());
+				
+			}
 			int rowsInserted = stmt.executeUpdate();
-
 			return rowsInserted > 0;
+			
 
 		} catch (SQLException e) {
 			e.printStackTrace();

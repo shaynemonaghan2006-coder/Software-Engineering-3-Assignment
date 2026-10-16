@@ -91,7 +91,7 @@ public class Order {
 		return qty*newPrice;
 	}
 	
-	public boolean createOrder(String orderDate, String pName, int qty, String price) {
+	public boolean createOrder(String orderDate, String pName, int qty, String price, int custId) {
 		if(verifyProductName(pName) && verifyOrderDate(orderDate) && verifyQuantity(qty) && verifyPrice(price)) {
 			return true;
 		}

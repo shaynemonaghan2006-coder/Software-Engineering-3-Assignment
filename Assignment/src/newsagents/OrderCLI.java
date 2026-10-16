@@ -18,12 +18,15 @@ public class OrderCLI {
 
 		System.out.print("Quantity: ");
 		int quantity = scanner.nextInt();
+		
+		System.out.print("Customer ID: ");
+		int custId = scanner.nextInt();
+		scanner.nextLine();
 
 		System.out.print("Price: ");
 		String price = scanner.nextLine();
 		
-		System.out.println("Customer ID");
-		int custId = scanner.nextInt();
+		
 
 		Order order = new Order(OrderDate,productName,quantity,price,custId);
 

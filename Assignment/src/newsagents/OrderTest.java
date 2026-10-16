@@ -196,7 +196,7 @@ public class OrderTest {
 	@Test
 	void validOrder_TC21() {
 		Order order = new Order();
-		assertTrue(order.createOrder("12102026", "Sun", 5, "1.50"));
+		assertTrue(order.createOrder("12102026", "Sun", 5, "1.50",1));
 	}
 	
 //  TC19
@@ -206,7 +206,7 @@ public class OrderTest {
 	@Test
 	void invalidOrderNoDate_TC22() {
 		Order order = new Order();
-		assertFalse(order.createOrder("", "Sun", 5, "1.50"));
+		assertFalse(order.createOrder("", "Sun", 5, "1.50",1));
 	}
 	
 //  TC20
@@ -216,7 +216,7 @@ public class OrderTest {
 	@Test
 	void invalidOrderNoName_TC23() {
 		Order order = new Order();
-		assertFalse(order.createOrder("12102026", "", 5, "1.50"));
+		assertFalse(order.createOrder("12102026", "", 5, "1.50",1));
 	}
 	
 //  TC21
@@ -226,7 +226,7 @@ public class OrderTest {
 	@Test
 	void invalidOrderInvalidQty_TC24() {
 		Order order = new Order();
-		assertFalse(order.createOrder("12102026", "Sun", 0, "1.50"));
+		assertFalse(order.createOrder("12102026", "Sun", 0, "1.50",1));
 	}
 	
 //  TC22
@@ -236,6 +236,6 @@ public class OrderTest {
 	@Test
 	void invalidOrderInvalidPrice_TC25() {
 		Order order = new Order();
-		assertFalse(order.createOrder("12102026", "Sun", 5, "1.1"));
+		assertFalse(order.createOrder("12102026", "Sun", 5, "1.1",1));
 	}
 }

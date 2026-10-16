@@ -13,7 +13,7 @@ public class Order {
 	private int custId;
 	
 	public boolean verifyProductName(String pname) {
-		if(pname.equals("")) {
+		if(pname.equals("") && pname.trim().isEmpty()) {
 			return false;
 		}
 		return true;

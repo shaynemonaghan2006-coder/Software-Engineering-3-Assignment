@@ -1,5 +1,5 @@
 
-package newsagent;
+package newsagents;
 
 public class Publication {
 

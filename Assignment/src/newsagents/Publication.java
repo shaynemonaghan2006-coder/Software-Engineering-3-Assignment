@@ -1,3 +1,4 @@
+
 package newsagent;
 
 public class Publication {
@@ -9,10 +10,7 @@ public class Publication {
     private String type;
     private int stockQuantity;
 
-    
-    public Publication(int publicationId, String publicationName,
-                       double price, String frequency,
-                       String type, int stockQuantity) {
+    public Publication(int publicationId, String publicationName, double price, String frequency, String type, int stockQuantity) {
         this.publicationId = publicationId;
         this.publicationName = publicationName;
         this.price = price;
@@ -20,7 +18,8 @@ public class Publication {
         this.type = type;
         this.stockQuantity = stockQuantity;
     }
-    
+
+
     public int getPublicationId() {
         return publicationId;
     }
@@ -67,6 +66,51 @@ public class Publication {
 
     public void setStockQuantity(int stockQuantity) {
         this.stockQuantity = stockQuantity;
+    }
+
+
+    public boolean verifyPublicationId(int id) {
+        return id > 0;
+    }
+
+    public boolean verifyPublicationName(String name) {
+        return name != null && !name.trim().isEmpty();
+    }
+
+    public boolean verifyPrice(double price) {
+        return Double.isFinite(price) && price >= 0;
+    }
+
+    public boolean verifyFrequency(String frequency) {
+        return frequency != null && !frequency.trim().isEmpty();
+    }
+
+    public boolean verifyType(String type) {
+        return type != null && !type.trim().isEmpty();
+    }
+
+    public boolean verifyStockQuantity(int quantity) {
+        return quantity >= 0;
+    }
+
+    public boolean addStock(int quantity) {
+        if (quantity <= 0 || quantity > Integer.MAX_VALUE - stockQuantity
+                || stockQuantity < 0) {
+            return false;
+        }
+
+        stockQuantity += quantity;
+        return true;
+    }
+
+    public boolean removeStock(int quantity) {
+        if (quantity <= 0 || quantity > stockQuantity
+                || stockQuantity < 0) {
+            return false;
+        }
+
+        stockQuantity -= quantity;
+        return true;
     }
 
     @Override

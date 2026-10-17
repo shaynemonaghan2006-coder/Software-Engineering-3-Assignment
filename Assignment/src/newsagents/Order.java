@@ -1,6 +1,5 @@
 package newsagents;
 
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.ResolverStyle;
@@ -11,25 +10,25 @@ public class Order {
 	private String price;
 	private int quantity;
 	private int custId;
-	
+
 	public boolean verifyProductName(String pname) {
-		if(pname.equals("") && pname.trim().isEmpty()) {
+		if (pname == null || pname.trim().isEmpty()) {
 			return false;
 		}
 		return true;
 	}
-	
+
 	public boolean verifyOrderDate(String orderDate) {
 		try {
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMuuuu").withResolverStyle(ResolverStyle.STRICT);
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMuuuu")
+					.withResolverStyle(ResolverStyle.STRICT);
 			LocalDate.parse(orderDate, formatter);
 			return true;
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			return false;
 		}
 	}
-	
+
 	public String getOrderDate() {
 		return orderDate;
 	}
@@ -71,28 +70,37 @@ public class Order {
 	}
 
 	public boolean verifyQuantity(int qty) {
-	    if (qty >= 1) {
-	        return true;
-	    } else {
-	        return false;
-	    }
+		if (qty >= 1) {
+			return true;
+		} else {
+			return false;
+		}
 	}
-	
+
 	public boolean verifyPrice(String price) {
-	    if (price.matches("\\d+\\.\\d{2}")
-	            && Double.parseDouble(price) > 0) {
-	        return true;
-	    }
-	    return false;
+		if (price == null || price.trim().isEmpty()) {
+			return false;
+		}
+
+		if (price.matches("\\d+\\.\\d{2}") && Double.parseDouble(price) > 0) {
+			return true;
+		}
+
+		return false;
 	}
-	
+
+	public boolean verifyCustomerId(int id) {
+		CustomerDAO customerDAO = new CustomerDAO();
+		return customerDAO.findCustomerById(id) != null && id > 0;
+	}
+
 	public double totalPrice(int qty, String price) {
 		Double newPrice = Double.parseDouble(price);
-		return qty*newPrice;
+		return qty * newPrice;
 	}
-	
+
 	public boolean createOrder(String orderDate, String pName, int qty, String price, int custId) {
-		if(verifyProductName(pName) && verifyOrderDate(orderDate) && verifyQuantity(qty) && verifyPrice(price)) {
+		if (verifyProductName(pName) && verifyOrderDate(orderDate) && verifyQuantity(qty) && verifyPrice(price) && verifyCustomerId(custId)) {
 			return true;
 		}
 		return false;
@@ -106,8 +114,8 @@ public class Order {
 		this.quantity = quantity;
 		this.custId = custId;
 	}
-	
-	public Order() {}
-	
-	
+
+	public Order() {
+	}
+
 }

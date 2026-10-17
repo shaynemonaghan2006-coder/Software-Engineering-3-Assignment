@@ -41,3 +41,18 @@ CREATE TABLE order_item (
     FOREIGN KEY (customerId)
 		REFERENCES customer(customerId)
 );
+
+
+-- Publications
+CREATE TABLE publication (
+    publicationId INT AUTO_INCREMENT PRIMARY KEY,
+    publicationName VARCHAR(100) NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
+    frequency VARCHAR(30) NOT NULL,
+    type VARCHAR(30) NOT NULL,
+    stockQuantity INT NOT NULL DEFAULT 0,
+
+    CHECK (price >= 0),
+    CHECK (stockQuantity >= 0)
+);
+

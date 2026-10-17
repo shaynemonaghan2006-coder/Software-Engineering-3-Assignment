@@ -3,6 +3,7 @@ USE newsagents_db;
 
 -- Drop tables in dependency order
 DROP TABLE IF EXISTS order_item;
+DROP TABLE IF EXISTS publication;
 DROP TABLE IF EXISTS customer;
 DROP TABLE IF EXISTS delivery_area;
 
@@ -25,6 +26,19 @@ CREATE TABLE customer (
 
     -- FOREIGN KEY (deliveryAreaId)
 --         REFERENCES delivery_area(deliveryAreaId)
+);
+
+-- Publications
+CREATE TABLE publication (
+    publicationId INT AUTO_INCREMENT PRIMARY KEY,
+    publicationName VARCHAR(100) NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
+    frequency VARCHAR(30) NOT NULL,
+    type VARCHAR(30) NOT NULL,
+    stockQuantity INT NOT NULL DEFAULT 0,
+
+    CHECK (price >= 0),
+    CHECK (stockQuantity >= 0)
 );
 
 -- Products belonging to each order

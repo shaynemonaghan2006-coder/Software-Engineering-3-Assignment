@@ -5,11 +5,12 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.ResolverStyle;
 
 public class Order {
+	private int orderId;
 	private String orderDate;
 	private String productName;
 	private String price;
 	private int quantity;
-	private int custId;
+	private int customerId;
 
 	public boolean verifyProductName(String pname) {
 		if (pname == null || pname.trim().isEmpty()) {
@@ -62,11 +63,19 @@ public class Order {
 	}
 
 	public int getCustId() {
-		return custId;
+		return customerId;
 	}
 
 	public void setCustId(int custId) {
-		this.custId = custId;
+		this.customerId = custId;
+	}
+	
+	public int getOrderId() {
+		return orderId;
+	}
+	
+	public void setOrderId(int orderId) {
+		this.orderId = orderId;
 	}
 
 	public boolean verifyQuantity(int qty) {
@@ -112,7 +121,7 @@ public class Order {
 		this.productName = productName;
 		this.price = price;
 		this.quantity = quantity;
-		this.custId = custId;
+		this.customerId = custId;
 	}
 
 	public Order() {

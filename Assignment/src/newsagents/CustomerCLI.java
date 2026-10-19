@@ -15,7 +15,7 @@ public class CustomerCLI {
 			System.out.println();
 			System.out.println("=== Customer Menu ===");
 			System.out.println("1 - Create Customer");
-			System.out.println("2 - Read Customers");
+			System.out.println("2 - Read Customer by ID");
 			System.out.println("3 - Update Customer");
 			System.out.println("4 - Delete Customer");
 			System.out.println("5 - Read all Customers");
@@ -144,7 +144,7 @@ public class CustomerCLI {
 				break;
 
 			default:
-				System.out.println("Invalid option chosen");
+				System.out.println("Invalid option chosen.");
 				break;
 			}
 

@@ -20,7 +20,7 @@ public class CustomerDAO {
 			+ "SET firstName=?, surname=?, address=?, phoneNumber=? " + "WHERE customerId=?";
 
 // DELETE
-	private static final String DELETE_CUSTOMER = "DELETE FROM CustomerTable WHERE customerId=?";
+	private static final String DELETE_CUSTOMER = "DELETE FROM customer WHERE customerId=?";
 
 	/**
 	 * CREATE CUSTOMER
@@ -30,13 +30,16 @@ public class CustomerDAO {
 		try (Connection conn = DatabaseConnection.getConnection();
 
 				PreparedStatement stmt = conn.prepareStatement(INSERT_CUSTOMER)) {
+			int rowsInserted = 0;
+			if (customer.createCustomerAccount(customer.getFirstName(), customer.getSurname(), customer.getAddress(),
+					customer.getPhoneNumber())) {
+				stmt.setString(1, customer.getFirstName());
+				stmt.setString(2, customer.getSurname());
+				stmt.setString(3, customer.getAddress());
+				stmt.setString(4, customer.getPhoneNumber());
 
-			stmt.setString(1, customer.getFirstName());
-			stmt.setString(2, customer.getSurname());
-			stmt.setString(3, customer.getAddress());
-			stmt.setString(4, customer.getPhoneNumber());
-
-			int rowsInserted = stmt.executeUpdate();
+				rowsInserted = stmt.executeUpdate();
+			}
 
 			return rowsInserted > 0;
 
@@ -128,15 +131,17 @@ public class CustomerDAO {
 		try (Connection conn = DatabaseConnection.getConnection();
 
 				PreparedStatement stmt = conn.prepareStatement(UPDATE_CUSTOMER)) {
+			int rowsUpdated = 0;
+			if (customer.createCustomerAccount(customer.getFirstName(), customer.getSurname(), customer.getAddress(),
+					customer.getPhoneNumber())) {
+				stmt.setString(1, customer.getFirstName());
+				stmt.setString(2, customer.getSurname());
+				stmt.setString(3, customer.getAddress());
+				stmt.setString(4, customer.getPhoneNumber());
+				stmt.setInt(5, customer.getCustomerId());
 
-			stmt.setString(1, customer.getFirstName());
-			stmt.setString(2, customer.getSurname());
-			stmt.setString(3, customer.getAddress());
-			stmt.setString(4, customer.getPhoneNumber());
-			stmt.setInt(5, customer.getCustomerId());
-
-			int rowsUpdated = stmt.executeUpdate();
-
+				rowsUpdated = stmt.executeUpdate();
+			}
 			return rowsUpdated > 0;
 
 		} catch (SQLException e) {

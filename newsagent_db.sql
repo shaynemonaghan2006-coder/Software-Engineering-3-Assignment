@@ -56,6 +56,18 @@ CREATE TABLE order_item (
 		REFERENCES customer(customerId)
 );
 
+-- Delivery Docket
+CREATE TABLE delivery_docket (
+    docketId INT AUTO_INCREMENT PRIMARY KEY,
+    orderId INT NOT NULL,
+    deliveryDate DATE NOT NULL,
+    deliveryStatus VARCHAR(20) NOT NULL,
+
+    FOREIGN KEY (orderId)
+        REFERENCES order_item(orderId)
+
+);
+
 select * from order_item;
 
 INSERT INTO customer

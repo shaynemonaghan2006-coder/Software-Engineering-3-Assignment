@@ -28,6 +28,15 @@ CREATE TABLE customer (
 --         REFERENCES delivery_area(deliveryAreaId)
 );
 
+-- News Agents
+CREATE TABLE news_agent (
+    newsAgentId INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    address VARCHAR(150) NOT NULL,
+    phoneNumber VARCHAR(10) NOT NULL,
+    email VARCHAR(100) NOT NULL
+);
+
 -- Publications
 CREATE TABLE publication (
     publicationId INT AUTO_INCREMENT PRIMARY KEY,

@@ -1,40 +1,145 @@
+
 package newagents;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class DeliveryDocketCLI {
 
-    public static void main(String[] args) {
+	public static void main(String[] args) {
 
-        Scanner scanner = new Scanner(System.in);
+		Scanner scanner = new Scanner(System.in);
+		boolean running = true;
+		DeliveryDocketDAO deliveryDocketDAO = new DeliveryDocketDAO();
+		DeliveryDocket docket;
 
-        System.out.println("=== Create New Delivery Docket ===");
+		while (running) {
+			System.out.println();
+			System.out.println("=== Delivery Docket Menu ===");
+			System.out.println("1 - Create Delivery Docket");
+			System.out.println("2 - Read Delivery Docket by ID");
+			System.out.println("3 - Update Delivery Docket");
+			System.out.println("4 - Delete Delivery Docket");
+			System.out.println("5 - Read all Delivery Dockets");
+			System.out.println("6 - Exit");
+			System.out.println();
+			System.out.print("Option: ");
 
-        System.out.print("Order ID: ");
-        int orderId = Integer.parseInt(scanner.nextLine());
+			int option = Integer.parseInt(scanner.nextLine());
 
-        System.out.print("Delivery Date (YYYY-MM-DD): ");
-        String deliveryDate = scanner.nextLine();
+			switch (option) {
+			case 1:
+				System.out.println("=== Create New Delivery Docket ===");
 
-        System.out.print("Delivery Status: ");
-        String deliveryStatus = scanner.nextLine();
+				System.out.print("Order ID: ");
+				int orderId = Integer.parseInt(scanner.nextLine());
 
-        DeliveryDocket docket =
-                new DeliveryDocket(
-                        orderId,
-                        deliveryDate,
-                        deliveryStatus);
+				System.out.print("Delivery Date (YYYY-MM-DD): ");
+				String deliveryDate = scanner.nextLine();
 
-        DeliveryDocketDAO deliveryDocketDAO = new DeliveryDocketDAO();
+				System.out.print("Delivery Status: ");
+				String deliveryStatus = scanner.nextLine();
 
-        if (deliveryDocketDAO.addDeliveryDocket(docket)) {
-            System.out.println(
-                    "Delivery docket saved successfully.");
-        } else {
-            System.out.println(
-                    "Failed to save delivery docket.");
-        }
+				docket = new DeliveryDocket(
+						orderId,
+						deliveryDate,
+						deliveryStatus);
 
-        scanner.close();
-    }
+				if (deliveryDocketDAO.addDeliveryDocket(docket)) {
+					System.out.println("Delivery docket saved successfully.");
+				} else {
+					System.out.println("Failed to save delivery docket.");
+				}
+				break;
+
+			case 2:
+				System.out.print("Enter Docket ID: ");
+				int docketId = Integer.parseInt(scanner.nextLine());
+
+				docket = deliveryDocketDAO.findDeliveryDocketById(docketId);
+
+				if (docket != null) {
+					System.out.println("\nDelivery Docket found:");
+					System.out.println("Order ID: " + docket.getOrderId());
+					System.out.println("Delivery Date: " + docket.getDeliveryDate());
+					System.out.println("Delivery Status: " + docket.getDeliveryStatus());
+				} else {
+					System.out.println("Delivery docket not found.");
+				}
+				break;
+
+			case 3:
+				System.out.print("Enter Docket ID to update: ");
+				docketId = Integer.parseInt(scanner.nextLine());
+
+				docket = deliveryDocketDAO.findDeliveryDocketById(docketId);
+
+				if (docket != null) {
+					System.out.print("New Order ID: ");
+					docket.setOrderId(Integer.parseInt(scanner.nextLine()));
+
+					System.out.print("New Delivery Date (YYYY-MM-DD): ");
+					docket.setDeliveryDate(scanner.nextLine());
+
+					System.out.print("New Delivery Status: ");
+					docket.setDeliveryStatus(scanner.nextLine());
+
+					if (deliveryDocketDAO.updateDeliveryDocket(docket)) {
+						System.out.println("Delivery docket updated successfully.");
+					} else {
+						System.out.println("Failed to update delivery docket.");
+					}
+				} else {
+					System.out.println("Delivery docket not found.");
+				}
+				break;
+
+			case 4:
+				System.out.print("Enter Docket ID to delete: ");
+				docketId = Integer.parseInt(scanner.nextLine());
+
+				docket = deliveryDocketDAO.findDeliveryDocketById(docketId);
+
+				if (docket != null) {
+					if (deliveryDocketDAO.deleteDeliveryDocket(docketId)) {
+						System.out.println("Delivery docket deleted successfully.");
+					} else {
+						System.out.println("Failed to delete delivery docket.");
+					}
+				} else {
+					System.out.println("Delivery docket not found.");
+				}
+				break;
+
+			case 5:
+				ArrayList<DeliveryDocket> dockets =
+						deliveryDocketDAO.getAllDeliveryDockets();
+
+				if (dockets.isEmpty()) {
+					System.out.println("No delivery dockets found.");
+				} else {
+					System.out.println("\n=== All Delivery Dockets ===");
+
+					for (DeliveryDocket currentDocket : dockets) {
+						System.out.println("--------------------");
+						System.out.println("Order ID: " + currentDocket.getOrderId());
+						System.out.println("Delivery Date: " + currentDocket.getDeliveryDate());
+						System.out.println("Delivery Status: " + currentDocket.getDeliveryStatus());
+					}
+				}
+				break;
+
+			case 6:
+				running = false;
+				System.out.println("Have a nice day!");
+				break;
+
+			default:
+				System.out.println("Invalid option chosen.");
+				break;
+			}
+		}
+
+		scanner.close();
+	}
 }

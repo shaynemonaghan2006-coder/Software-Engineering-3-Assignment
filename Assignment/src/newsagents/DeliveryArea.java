@@ -18,4 +18,8 @@ public class DeliveryArea {
 		throw new RuntimeException("No PC");
 	}
 	
+	public DeliveryArea() {
+		
+	}
+	
 }

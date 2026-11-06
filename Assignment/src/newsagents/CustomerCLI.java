@@ -4,25 +4,18 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class CustomerCLI {
-
+	static Scanner scanner = new Scanner(System.in);
+	static CustomerDAO customerDAO = new CustomerDAO();
+	static Customer customer;
+	static int customerId;
 	public static void main(String[] args) {
 
-		Scanner scanner = new Scanner(System.in);
+		
 		boolean running = true;
-		CustomerDAO customerDAO = new CustomerDAO();
-		Customer customer;
+		
 		while (running) {
-			System.out.println();
-			System.out.println("=== Customer Menu ===");
-			System.out.println("1 - Create Customer");
-			System.out.println("2 - Read Customer by ID");
-			System.out.println("3 - Update Customer");
-			System.out.println("4 - Delete Customer");
-			System.out.println("5 - Read all Customers");
-			System.out.println("6 - Exit");
-			System.out.println();
-			System.out.print("Option: ");
-			int option = scanner.nextInt();
+			
+			int option = mainMenu();
 			scanner.nextLine();
 
 			switch (option) {
@@ -54,7 +47,7 @@ public class CustomerCLI {
 
 			case 2:
 				System.out.print("Enter Customer ID: ");
-				int customerId = scanner.nextInt();
+				customerId = scanner.nextInt();
 				scanner.nextLine();
 				
 				customer = customerDAO.findCustomerById(customerId);
@@ -151,4 +144,22 @@ public class CustomerCLI {
 		}
 		scanner.close();
 	}
+	
+	public static int mainMenu() {
+		System.out.println();
+		System.out.println("=== Customer Menu ===");
+		System.out.println("1 - Create Customer");
+		System.out.println("2 - Read Customer by ID");
+		System.out.println("3 - Update Customer");
+		System.out.println("4 - Delete Customer");
+		System.out.println("5 - Read all Customers");
+		System.out.println("6 - Exit");
+		System.out.println();
+		System.out.print("Option: ");
+		int option = scanner.nextInt();
+		scanner.nextLine();
+		return option;
+	}
+	
+	
 }

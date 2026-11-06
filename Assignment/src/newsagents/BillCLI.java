@@ -1,4 +1,4 @@
-package newagents;
+package newsagents;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -46,7 +46,6 @@ public class BillCLI {
 				String paymentDate = scanner.nextLine();
 
 				bill = new Bill(
-						receiptId,
 						orderReference,
 						driverId,
 						paymentDate);

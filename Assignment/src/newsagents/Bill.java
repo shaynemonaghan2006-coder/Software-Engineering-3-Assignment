@@ -1,4 +1,4 @@
-package newagents;
+package newsagents;
 
 public class Bill {
 
@@ -7,8 +7,8 @@ public class Bill {
     private int driverId;
     private String paymentDate;
 
-    public Bill(int receiptId, String orderReference, int driverId, String paymentDate) {
-        this.receiptId = receiptId;
+    public Bill(String orderReference, int driverId, String paymentDate) {
+        
         this.orderReference = orderReference;
         this.driverId = driverId;
         this.paymentDate = paymentDate;

@@ -1,4 +1,4 @@
-package newagents;
+package newsagents;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
@@ -14,8 +14,8 @@ public class BillTest {
 
 	@Test
 	void validBillIdMin_TC01() {
-	    Bill bill = new Bill(1, "ORD-101", "Paid", "16/10/2026", 150.50);
-	    assertTrue(String.valueOf(bill.getBillId()).length() > 0);
+	    Bill bill = new Bill("ORD-101", "Paid", "16/10/2026", 150.50);
+	    assertTrue(String.valueOf(bill.getReceiptId()).length() > 0);
 	}
 
 	// TC02
@@ -26,7 +26,7 @@ public class BillTest {
 	@Test
 	void validBillIdMax_TC02() {
 	    Bill bill = new Bill(1, "ORD-101", "Paid", "16/10/2026", 150.50);
-	    assertFalse(String.valueOf(bill.getBillId()).length() > 30);
+	    assertFalse(String.valueOf(bill.getReceiptId()).length() > 30);
 	}
 
 	// TC03

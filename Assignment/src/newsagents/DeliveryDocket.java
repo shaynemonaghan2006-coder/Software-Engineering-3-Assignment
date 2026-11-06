@@ -7,9 +7,9 @@ public class DeliveryDocket {
     private String deliveryDate;
     private String deliveryStatus;
 
-    public DeliveryDocket(int docketId, int orderId,
+    public DeliveryDocket(int orderId,
             String deliveryDate, String deliveryStatus) {
-        this.docketId = docketId;
+        
         this.orderId = orderId;
         this.deliveryDate = deliveryDate;
         this.deliveryStatus = deliveryStatus;

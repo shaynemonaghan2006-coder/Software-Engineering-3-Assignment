@@ -1,5 +1,5 @@
 
-package newagents;
+package newsagents;
 
 import java.util.ArrayList;
 import java.util.Scanner;

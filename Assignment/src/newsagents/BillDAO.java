@@ -1,4 +1,4 @@
-package newagents;
+package newsagents;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -6,8 +6,8 @@ import java.util.ArrayList;
 public class BillDAO {
 
 	private static final String INSERT_BILL = "INSERT INTO bill "
-			+ "(receiptId, orderReference, driverId, paymentDate) "
-			+ "VALUES (?, ?, ?, ?)";
+			+ "(orderReference, driverId, paymentDate) "
+			+ "VALUES (?, ?, ?)";
 
 	private static final String SELECT_BY_ID =
 			"SELECT * FROM bill WHERE receiptId = ?";
@@ -58,11 +58,7 @@ public class BillDAO {
 			ResultSet rs = stmt.executeQuery();
 
 			if (rs.next()) {
-				bill = new Bill(
-						rs.getInt("receiptId"),
-						rs.getString("orderReference"),
-						rs.getInt("driverId"),
-						rs.getString("paymentDate"));
+				bill = new Bill(rs.getString("orderReference"),	rs.getInt("driverId"),rs.getString("paymentDate"));
 			}
 
 		} catch (SQLException e) {
@@ -85,7 +81,6 @@ public class BillDAO {
 
 			while (rs.next()) {
 				Bill bill = new Bill(
-						rs.getInt("receiptId"),
 						rs.getString("orderReference"),
 						rs.getInt("driverId"),
 						rs.getString("paymentDate"));

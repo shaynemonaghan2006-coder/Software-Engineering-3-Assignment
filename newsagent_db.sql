@@ -5,6 +5,7 @@ USE newsagents_db;
 DROP TABLE IF EXISTS order_item;
 DROP TABLE IF EXISTS publication;
 DROP TABLE IF EXISTS customer;
+DROP TABLE IF EXISTS news_agent;
 DROP TABLE IF EXISTS delivery_area;
 
 -- Delivery areas

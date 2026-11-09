@@ -1,4 +1,3 @@
-```java
 package newsagents;
 
 import java.sql.Connection;
@@ -180,4 +179,3 @@ public class PublicationDAO {
         }
     }
 }
-```

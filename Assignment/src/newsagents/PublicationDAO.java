@@ -1,3 +1,4 @@
+```java
 package newsagents;
 
 import java.sql.Connection;
@@ -27,23 +28,29 @@ public class PublicationDAO {
     private static final String DELETE_PUBLICATION =
             "DELETE FROM publication WHERE publicationId=?";
 
+    //Validates a Publication
+    private boolean isValidPublication(Publication publication) {
+        return publication != null
+                && publication.verifyPublicationName(
+                        publication.getPublicationName())
+                && publication.verifyPrice(publication.getPrice())
+                && publication.verifyFrequency(
+                        publication.getFrequency())
+                && publication.verifyType(publication.getType())
+                && publication.verifyStockQuantity(
+                        publication.getStockQuantity());
+    }
+
     //Creates Publication
     public boolean addPublication(Publication publication) {
+
+        if (!isValidPublication(publication)) {
+            return false;
+        }
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt =
                      conn.prepareStatement(INSERT_PUBLICATION)) {
-
-            if (!publication.verifyPublicationName(
-                        publication.getPublicationName())
-                    || !publication.verifyPrice(publication.getPrice())
-                    || !publication.verifyFrequency(
-                        publication.getFrequency())
-                    || !publication.verifyType(publication.getType())
-                    || !publication.verifyStockQuantity(
-                        publication.getStockQuantity())) {
-                return false;
-            }
 
             stmt.setString(1, publication.getPublicationName());
             stmt.setDouble(2, publication.getPrice());
@@ -51,9 +58,7 @@ public class PublicationDAO {
             stmt.setString(4, publication.getType());
             stmt.setInt(5, publication.getStockQuantity());
 
-            int rowsInserted = stmt.executeUpdate();
-
-            return rowsInserted > 0;
+            return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -64,7 +69,9 @@ public class PublicationDAO {
     //Finds Publications by ID
     public Publication findPublicationById(int publicationId) {
 
-        Publication publication = null;
+        if (publicationId <= 0) {
+            return null;
+        }
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt =
@@ -75,7 +82,7 @@ public class PublicationDAO {
             try (ResultSet rs = stmt.executeQuery()) {
 
                 if (rs.next()) {
-                    publication = new Publication(
+                    return new Publication(
                             rs.getInt("publicationId"),
                             rs.getString("publicationName"),
                             rs.getDouble("price"),
@@ -90,7 +97,7 @@ public class PublicationDAO {
             e.printStackTrace();
         }
 
-        return publication;
+        return null;
     }
 
     //Gets all Publications
@@ -127,22 +134,15 @@ public class PublicationDAO {
     //Update a Publication
     public boolean updatePublication(Publication publication) {
 
+        if (!isValidPublication(publication)
+                || !publication.verifyPublicationId(
+                        publication.getPublicationId())) {
+            return false;
+        }
+
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt =
                      conn.prepareStatement(UPDATE_PUBLICATION)) {
-
-            if (!publication.verifyPublicationId(
-                        publication.getPublicationId())
-                    || !publication.verifyPublicationName(
-                        publication.getPublicationName())
-                    || !publication.verifyPrice(publication.getPrice())
-                    || !publication.verifyFrequency(
-                        publication.getFrequency())
-                    || !publication.verifyType(publication.getType())
-                    || !publication.verifyStockQuantity(
-                        publication.getStockQuantity())) {
-                return false;
-            }
 
             stmt.setString(1, publication.getPublicationName());
             stmt.setDouble(2, publication.getPrice());
@@ -151,9 +151,7 @@ public class PublicationDAO {
             stmt.setInt(5, publication.getStockQuantity());
             stmt.setInt(6, publication.getPublicationId());
 
-            int rowsUpdated = stmt.executeUpdate();
-
-            return rowsUpdated > 0;
+            return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -164,15 +162,17 @@ public class PublicationDAO {
     //Delete a Publication
     public boolean deletePublication(int publicationId) {
 
+        if (publicationId <= 0) {
+            return false;
+        }
+
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt =
                      conn.prepareStatement(DELETE_PUBLICATION)) {
 
             stmt.setInt(1, publicationId);
 
-            int rowsDeleted = stmt.executeUpdate();
-
-            return rowsDeleted > 0;
+            return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -180,3 +180,4 @@ public class PublicationDAO {
         }
     }
 }
+```

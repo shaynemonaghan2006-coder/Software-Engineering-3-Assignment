@@ -50,6 +50,7 @@ public class PublicationCLI {
         } while (choice != 0);
     }
 
+    //Adds a Publication
     private static void addPublication() {
 
         System.out.println("\n--- Add Publication ---");
@@ -79,6 +80,7 @@ public class PublicationCLI {
         }
     }
 
+    //Finds a Publication by ID
     private static void findPublication() {
 
         System.out.print("Enter Publication ID: ");
@@ -93,6 +95,7 @@ public class PublicationCLI {
         }
     }
 
+    //Gets all Publications
     private static void viewAllPublications() {
 
         ArrayList<Publication> publications = dao.getAllPublications();
@@ -108,6 +111,7 @@ public class PublicationCLI {
         }
     }
 
+    //Updates a Publication
     private static void updatePublication() {
 
         System.out.print("Enter Publication ID to update: ");
@@ -148,6 +152,7 @@ public class PublicationCLI {
         }
     }
 
+    //Deletes a Publication
     private static void deletePublication() {
 
         System.out.print("Enter Publication ID to delete: ");
@@ -175,6 +180,7 @@ public class PublicationCLI {
         }
     }
 
+    //Reads an integer
     private static int readInt() {
         while (true) {
             try {
@@ -185,6 +191,7 @@ public class PublicationCLI {
         }
     }
 
+    //Reads a double
     private static double readDouble() {
         while (true) {
             try {

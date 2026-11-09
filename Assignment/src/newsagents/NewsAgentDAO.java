@@ -1,4 +1,3 @@
-```java
 package newsagents;
 
 import java.sql.Connection;
@@ -153,4 +152,20 @@ public class NewsAgentDAO {
     public boolean deleteNewsAgent(int newsAgentId) {
 
         if (newsAgentId <= 0) {
-           
+            return false;
+        }
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt =
+                     conn.prepareStatement(DELETE_NEWS_AGENT)) {
+
+            stmt.setInt(1, newsAgentId);
+
+            return stmt.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+}

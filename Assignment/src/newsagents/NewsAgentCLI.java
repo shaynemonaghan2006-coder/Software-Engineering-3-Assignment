@@ -50,6 +50,7 @@ public class NewsAgentCLI {
         } while (choice != 0);
     }
 
+    //Adds a news agent
     private static void addNewsAgent() {
 
         System.out.println("\n--- Add News Agent ---");
@@ -76,6 +77,7 @@ public class NewsAgentCLI {
         }
     }
 
+    //Finds news agent by ID
     private static void findNewsAgent() {
 
         System.out.print("Enter News Agent ID: ");
@@ -90,6 +92,7 @@ public class NewsAgentCLI {
         }
     }
 
+    //Gets all news agents
     private static void viewAllNewsAgents() {
 
         ArrayList<NewsAgent> agents = dao.getAllNewsAgents();
@@ -105,6 +108,7 @@ public class NewsAgentCLI {
         }
     }
 
+    //Updates a news agent
     private static void updateNewsAgent() {
 
         System.out.print("Enter News Agent ID to update: ");
@@ -142,6 +146,7 @@ public class NewsAgentCLI {
         }
     }
 
+    //Deletes a news agent
     private static void deleteNewsAgent() {
 
         System.out.print("Enter News Agent ID to delete: ");
@@ -169,11 +174,11 @@ public class NewsAgentCLI {
         }
     }
 
+    //Reads an integer
     private static int readInt() {
         while (true) {
             try {
-                int number = Integer.parseInt(scanner.nextLine().trim());
-                return number;
+                return Integer.parseInt(scanner.nextLine().trim());
             } catch (NumberFormatException e) {
                 System.out.print("Please enter a valid number: ");
             }

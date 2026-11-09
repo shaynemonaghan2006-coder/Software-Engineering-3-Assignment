@@ -1,3 +1,4 @@
+```java
 package newsagents;
 
 import java.sql.Connection;
@@ -27,28 +28,31 @@ public class NewsAgentDAO {
             "DELETE FROM news_agent WHERE newsAgentId=?";
 
     //Creates news agent
+    private boolean isValidNewsAgent(NewsAgent agent) {
+        return agent != null
+                && agent.verifyName(agent.getName())
+                && agent.verifyAddress(agent.getAddress())
+                && agent.verifyPhoneNumber(agent.getPhoneNumber())
+                && agent.verifyEmail(agent.getEmail());
+    }
+
+    //Creates news agent
     public boolean addNewsAgent(NewsAgent agent) {
+
+        if (!isValidNewsAgent(agent)) {
+            return false;
+        }
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt =
                      conn.prepareStatement(INSERT_NEWS_AGENT)) {
 
-            int rowsInserted = 0;
+            stmt.setString(1, agent.getName());
+            stmt.setString(2, agent.getAddress());
+            stmt.setString(3, agent.getPhoneNumber());
+            stmt.setString(4, agent.getEmail());
 
-            if (agent.verifyName(agent.getName())
-                    && agent.verifyAddress(agent.getAddress())
-                    && agent.verifyPhoneNumber(agent.getPhoneNumber())
-                    && agent.verifyEmail(agent.getEmail())) {
-
-                stmt.setString(1, agent.getName());
-                stmt.setString(2, agent.getAddress());
-                stmt.setString(3, agent.getPhoneNumber());
-                stmt.setString(4, agent.getEmail());
-
-                rowsInserted = stmt.executeUpdate();
-            }
-
-            return rowsInserted > 0;
+            return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -59,7 +63,9 @@ public class NewsAgentDAO {
     //Finds news agent by ID
     public NewsAgent findNewsAgentById(int newsAgentId) {
 
-        NewsAgent agent = null;
+        if (newsAgentId <= 0) {
+            return null;
+        }
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt =
@@ -70,7 +76,7 @@ public class NewsAgentDAO {
             try (ResultSet rs = stmt.executeQuery()) {
 
                 if (rs.next()) {
-                    agent = new NewsAgent(
+                    return new NewsAgent(
                             rs.getInt("newsAgentId"),
                             rs.getString("name"),
                             rs.getString("address"),
@@ -84,10 +90,10 @@ public class NewsAgentDAO {
             e.printStackTrace();
         }
 
-        return agent;
+        return null;
     }
 
-   //Gets all news agent
+    //Gets all news agent
     public ArrayList<NewsAgent> getAllNewsAgents() {
 
         ArrayList<NewsAgent> agents = new ArrayList<>();
@@ -120,28 +126,22 @@ public class NewsAgentDAO {
     //Updates a news agent
     public boolean updateNewsAgent(NewsAgent agent) {
 
+        if (!isValidNewsAgent(agent)
+                || !agent.verifyNewsAgentId(agent.getNewsAgentId())) {
+            return false;
+        }
+
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt =
                      conn.prepareStatement(UPDATE_NEWS_AGENT)) {
 
-            int rowsUpdated = 0;
+            stmt.setString(1, agent.getName());
+            stmt.setString(2, agent.getAddress());
+            stmt.setString(3, agent.getPhoneNumber());
+            stmt.setString(4, agent.getEmail());
+            stmt.setInt(5, agent.getNewsAgentId());
 
-            if (agent.verifyNewsAgentId(agent.getNewsAgentId())
-                    && agent.verifyName(agent.getName())
-                    && agent.verifyAddress(agent.getAddress())
-                    && agent.verifyPhoneNumber(agent.getPhoneNumber())
-                    && agent.verifyEmail(agent.getEmail())) {
-
-                stmt.setString(1, agent.getName());
-                stmt.setString(2, agent.getAddress());
-                stmt.setString(3, agent.getPhoneNumber());
-                stmt.setString(4, agent.getEmail());
-                stmt.setInt(5, agent.getNewsAgentId());
-
-                rowsUpdated = stmt.executeUpdate();
-            }
-
-            return rowsUpdated > 0;
+            return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -152,19 +152,5 @@ public class NewsAgentDAO {
     //Deletes a news agent
     public boolean deleteNewsAgent(int newsAgentId) {
 
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt =
-                     conn.prepareStatement(DELETE_NEWS_AGENT)) {
-
-            stmt.setInt(1, newsAgentId);
-
-            int rowsDeleted = stmt.executeUpdate();
-
-            return rowsDeleted > 0;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-}
+        if (newsAgentId <= 0) {
+           

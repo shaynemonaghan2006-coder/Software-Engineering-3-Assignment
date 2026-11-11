@@ -13,7 +13,15 @@ CREATE TABLE delivery_area (
     deliveryAreaId INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
     region VARCHAR(100) NOT NULL,
-    driverName VARCHAR(100) NOT NULL
+    driverId INT NOT NULL,
+    
+    FOREIGN KEY (driverId)
+        REFERENCES delivery_driver(driver_id)
+);
+
+-- Delivery Driver 
+CREATE TABLE delivery_driver(
+	driverId INT AUTO_INCREMENT PRIMARY KEY
 );
 
 -- Customers

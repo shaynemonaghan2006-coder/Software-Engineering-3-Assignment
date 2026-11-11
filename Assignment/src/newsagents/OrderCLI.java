@@ -140,7 +140,7 @@ public class OrderCLI {
 			System.out.print("New price: ");
 			order.setPrice(scanner.nextLine());
 			
-			if (orderDAO.addOrder(order)) {
+			if (orderDAO.updateOrder(order)) {
 				System.out.println("Order updated successfully.");
 			} else {
 				System.out.println("Failed to update order.");

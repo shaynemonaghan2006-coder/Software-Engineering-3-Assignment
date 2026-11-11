@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class DeliveryDocketCLI {
 
-	public static void main(String[] args) {
+	public DeliveryDocketCLI() {
 
 		Scanner scanner = new Scanner(System.in);
 		boolean running = true;
@@ -140,6 +140,6 @@ public class DeliveryDocketCLI {
 			}
 		}
 
-		scanner.close();
+		
 	}
 }

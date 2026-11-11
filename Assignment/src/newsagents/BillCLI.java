@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class BillCLI {
 
-	public static void main(String[] args) {
+	public BillCLI() {
 
 		Scanner scanner = new Scanner(System.in);
 		boolean running = true;
@@ -150,6 +150,6 @@ public class BillCLI {
 			}
 		}
 
-		scanner.close();
+		
 	}
 }

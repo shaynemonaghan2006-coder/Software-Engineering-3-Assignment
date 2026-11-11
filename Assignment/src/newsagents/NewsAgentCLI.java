@@ -8,7 +8,7 @@ public class NewsAgentCLI {
     private static final Scanner scanner = new Scanner(System.in);
     private static final NewsAgentDAO dao = new NewsAgentDAO();
 
-    public static void main(String[] args) {
+    public NewsAgentCLI() {
 
         int choice;
 
@@ -19,7 +19,7 @@ public class NewsAgentCLI {
             System.out.println("3. View All News Agents");
             System.out.println("4. Update News Agent");
             System.out.println("5. Delete News Agent");
-            System.out.println("0. Exit");
+            System.out.println("6. Exit");
             System.out.print("Enter choice: ");
 
             choice = readInt();
@@ -40,14 +40,14 @@ public class NewsAgentCLI {
                 case 5:
                     deleteNewsAgent();
                     break;
-                case 0:
+                case 6:
                     System.out.println("Exiting News Agent Menu.");
                     break;
                 default:
                     System.out.println("Invalid choice. Try again.");
             }
 
-        } while (choice != 0);
+        } while (choice != 6);
     }
 
     //Adds a news agent

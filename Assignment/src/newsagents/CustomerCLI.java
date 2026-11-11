@@ -8,7 +8,8 @@ public class CustomerCLI {
 	static CustomerDAO customerDAO = new CustomerDAO();
 	static Customer customer;
 	static int customerId;
-	public static void main(String[] args) {
+	
+	public CustomerCLI() {
 
 		
 		boolean running = true;
@@ -16,7 +17,6 @@ public class CustomerCLI {
 		while (running) {
 			
 			int option = mainMenu();
-			scanner.nextLine();
 
 			switch (option) {
 			case 1:
@@ -142,7 +142,7 @@ public class CustomerCLI {
 			}
 
 		}
-		scanner.close();
+		
 	}
 	
 	public static int mainMenu() {

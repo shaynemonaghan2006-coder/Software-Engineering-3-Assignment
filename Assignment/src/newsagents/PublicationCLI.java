@@ -8,7 +8,7 @@ public class PublicationCLI {
     private static final Scanner scanner = new Scanner(System.in);
     private static final PublicationDAO dao = new PublicationDAO();
 
-    public static void main(String[] args) {
+    public PublicationCLI() {
 
         int choice;
 
@@ -19,7 +19,7 @@ public class PublicationCLI {
             System.out.println("3. View All Publications");
             System.out.println("4. Update Publication");
             System.out.println("5. Delete Publication");
-            System.out.println("0. Exit");
+            System.out.println("6. Exit");
             System.out.print("Enter choice: ");
 
             choice = readInt();
@@ -40,14 +40,14 @@ public class PublicationCLI {
                 case 5:
                     deletePublication();
                     break;
-                case 0:
+                case 6:
                     System.out.println("Exiting Publication Menu.");
                     break;
                 default:
                     System.out.println("Invalid choice. Try again.");
             }
 
-        } while (choice != 0);
+        } while (choice != 6);
     }
 
     //Adds a Publication

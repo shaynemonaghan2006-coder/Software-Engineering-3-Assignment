@@ -8,7 +8,7 @@ public class DeliveryAreaCLI {
 	static DeliveryAreaDAO deliveryAreaDAO = new DeliveryAreaDAO();
 	static DeliveryArea deliveryArea;
 	static int deliveryAreaId;
-	public static void main(String[] args) {
+	public DeliveryAreaCLI() {
 
 		boolean running = true;
 		
@@ -46,7 +46,6 @@ public class DeliveryAreaCLI {
 			}
 		}
 		
-		scanner.close();
 	}
 	
 	public static int mainMenu() {

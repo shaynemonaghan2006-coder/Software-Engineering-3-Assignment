@@ -8,7 +8,7 @@ public class OrderCLI {
 	static OrderDAO orderDAO = new OrderDAO();
 	static Order order;
 	static int orderId;
-	public static void main(String[] args) {
+	public OrderCLI() {
 
 		boolean running = true;
 		
@@ -46,7 +46,7 @@ public class OrderCLI {
 			}
 		}
 		
-		scanner.close();
+		
 	}
 	
 	public static int mainMenu() {

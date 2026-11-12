@@ -94,6 +94,18 @@ CREATE TABLE delivery_docket (
         REFERENCES order_item(orderId)
 
 );
+ -- Bill
+CREATE TABLE bill (
+
+    billId INT AUTO_INCREMENT PRIMARY KEY,
+
+    paymentStatus VARCHAR(20) NOT NULL,
+
+    paymentDate VARCHAR(10) NOT NULL,
+
+    totalAmount DECIMAL(10,2) NOT NULL,
+);
+
 
 select * from order_item;
 

@@ -1,41 +1,40 @@
+
 package newsagents;
 
 public class Bill {
 
-    private int receiptId;
-    private String orderReference;
-    private int driverId;
+    private int billId;
+    private String paymentStatus;
     private String paymentDate;
+    private double totalAmount;
 
-    public Bill(String orderReference, int driverId, String paymentDate) {
-        
-        this.orderReference = orderReference;
-        this.driverId = driverId;
+    public Bill(String paymentStatus, String paymentDate, double totalAmount) {
+        this.paymentStatus = paymentStatus;
         this.paymentDate = paymentDate;
+        this.totalAmount = totalAmount;
     }
 
-    public int getReceiptId() {
-        return receiptId;
+    public Bill(int billId, String paymentStatus, String paymentDate, double totalAmount) {
+        this.billId = billId;
+        this.paymentStatus = paymentStatus;
+        this.paymentDate = paymentDate;
+        this.totalAmount = totalAmount;
     }
 
-    public void setReceiptId(int receiptId) {
-        this.receiptId = receiptId;
+    public int getBillId() {
+        return billId;
     }
 
-    public String getOrderReference() {
-        return orderReference;
+    public void setBillId(int billId) {
+        this.billId = billId;
     }
 
-    public void setOrderReference(String orderReference) {
-        this.orderReference = orderReference;
+    public String getPaymentStatus() {
+        return paymentStatus;
     }
 
-    public int getDriverId() {
-        return driverId;
-    }
-
-    public void setDriverId(int driverId) {
-        this.driverId = driverId;
+    public void setPaymentStatus(String paymentStatus) {
+        this.paymentStatus = paymentStatus;
     }
 
     public String getPaymentDate() {
@@ -46,13 +45,21 @@ public class Bill {
         this.paymentDate = paymentDate;
     }
 
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
     @Override
     public String toString() {
-        return "Receipt{" +
-                "receiptId=" + receiptId +
-                ", orderReference='" + orderReference + '\'' +
-                ", driverId=" + driverId +
+        return "Bill{" +
+                "billId=" + billId +
+                ", paymentStatus='" + paymentStatus + '\'' +
                 ", paymentDate='" + paymentDate + '\'' +
+                ", totalAmount=" + totalAmount +
                 '}';
     }
 }

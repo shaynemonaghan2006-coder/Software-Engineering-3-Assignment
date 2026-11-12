@@ -68,8 +68,6 @@ public class DeliveryDocketDAO {
                 docket = new DeliveryDocket(
                         rs.getString("deliveryDate"),
                         rs.getString("deliveryStatus"));
-
-                docket.setDocketId(rs.getInt("docketId"));
             }
 
         } catch (SQLException e) {
@@ -94,8 +92,6 @@ public class DeliveryDocketDAO {
                         rs.getString("deliveryDate"),
                         rs.getString("deliveryStatus"));
 
-                docket.setDocketId(rs.getInt("docketId"));
-
                 dockets.add(docket);
             }
 
@@ -107,7 +103,7 @@ public class DeliveryDocketDAO {
     }
 
     // UPDATE DELIVERY DOCKET
-    public boolean updateDeliveryDocket(DeliveryDocket docket) {
+    public boolean updateDeliveryDocket(DeliveryDocket docket, int docketId) {
 
         if (!isValidDeliveryStatus(docket.getDeliveryStatus())) {
             System.out.println("Invalid delivery status. Enter Delivered or InTransit.");
@@ -119,7 +115,7 @@ public class DeliveryDocketDAO {
 
             stmt.setString(1, docket.getDeliveryDate());
             stmt.setString(2, docket.getDeliveryStatus());
-            stmt.setInt(3, docket.getDocketId());
+            stmt.setInt(3, docketId);
 
             int rowsUpdated = stmt.executeUpdate();
 

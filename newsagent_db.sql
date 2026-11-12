@@ -7,6 +7,8 @@ DROP TABLE IF EXISTS publication;
 DROP TABLE IF EXISTS customer;
 DROP TABLE IF EXISTS news_agent;
 DROP TABLE IF EXISTS delivery_area;
+DROP TABLE IF EXISTS delivery_person;
+DROP TABLE IF EXISTS delivery_docket;
 
 -- Delivery areas
 CREATE TABLE delivery_area (
@@ -19,9 +21,13 @@ CREATE TABLE delivery_area (
         REFERENCES delivery_driver(driver_id)
 );
 
--- Delivery Driver 
-CREATE TABLE delivery_driver(
-	driverId INT AUTO_INCREMENT PRIMARY KEY
+-- Delivery Person
+CREATE TABLE delivery_person(
+	driverId INT AUTO_INCREMENT PRIMARY KEY,
+    firstName VARCHAR(50) NOT NULL,
+    surname VARCHAR(50) NOT NULL,
+    address VARCHAR(150) NOT NULL,
+    phoneNumber VARCHAR(20) NOT NULL
 );
 
 -- Customers

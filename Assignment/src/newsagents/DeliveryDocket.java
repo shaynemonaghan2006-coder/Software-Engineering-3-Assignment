@@ -3,21 +3,12 @@ package newsagents;
 
 public class DeliveryDocket {
 
-    private int docketId;
     private String deliveryDate;
     private String deliveryStatus;
 
     public DeliveryDocket(String deliveryDate, String deliveryStatus) {
         this.deliveryDate = deliveryDate;
         this.deliveryStatus = deliveryStatus;
-    }
-
-    public int getDocketId() {
-        return docketId;
-    }
-
-    public void setDocketId(int docketId) {
-        this.docketId = docketId;
     }
 
     public String getDeliveryDate() {
@@ -39,8 +30,7 @@ public class DeliveryDocket {
     @Override
     public String toString() {
         return "DeliveryDocket{" +
-                "docketId=" + docketId +
-                ", deliveryDate='" + deliveryDate + '\'' +
+                "deliveryDate='" + deliveryDate + '\'' +
                 ", deliveryStatus='" + deliveryStatus + '\'' +
                 '}';
     }

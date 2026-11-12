@@ -1,137 +1,143 @@
+
 package newsagents;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class BillDAO {
 
-	private static final String INSERT_BILL = "INSERT INTO bill "
-			+ "(orderReference, driverId, paymentDate) "
-			+ "VALUES (?, ?, ?)";
+    private final String url = "jdbc:mysql://localhost:3306/newsagents_db";
+    private final String username = "root";
+    private final String password = "";
 
-	private static final String SELECT_BY_ID =
-			"SELECT * FROM bill WHERE receiptId = ?";
+    private final DateTimeFormatter format =
+        DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-	private static final String SELECT_ALL =
-			"SELECT * FROM bill";
+    // Connect to database
+    private Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(url, username, password);
+    }
 
-	private static final String UPDATE_BILL = "UPDATE bill "
-			+ "SET orderReference=?, driverId=?, paymentDate=? "
-			+ "WHERE receiptId=?";
+    // Add bill
+    public boolean addBill(Bill bill) {
 
-	private static final String DELETE_BILL =
-			"DELETE FROM bill WHERE receiptId=?";
+        String sql = "INSERT INTO bill (Payment_Status, Payment_Date, Total_Amount) VALUES (?, ?, ?)";
 
-	//CREATE BILL
-	public boolean addBill(Bill bill) {
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
-		try (Connection conn = DatabaseConnection.getConnection();
+            ps.setString(1, bill.getPaymentStatus());
 
-				PreparedStatement stmt = conn.prepareStatement(INSERT_BILL)) {
+            LocalDate date = LocalDate.parse(bill.getPaymentDate(), format);
+            ps.setDate(2, Date.valueOf(date));
 
-			stmt.setInt(1, bill.getReceiptId());
-			stmt.setString(2, bill.getOrderReference());
-			stmt.setInt(3, bill.getDriverId());
-			stmt.setString(4, bill.getPaymentDate());
+            ps.setDouble(3, bill.getTotalAmount());
 
-			int rowsInserted = stmt.executeUpdate();
+            return ps.executeUpdate() > 0;
 
-			return rowsInserted > 0;
+        } catch (SQLException | java.time.format.DateTimeParseException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
+    // Find bill by ID
+    public Bill findBillById(int billId) {
 
-	//FIND BILL BY RECEIPT ID
-	public Bill findBillById(int receiptId) {
+        String sql = "SELECT * FROM bill WHERE Bill_ID = ?";
 
-		Bill bill = null;
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
-		try (Connection conn = DatabaseConnection.getConnection();
+            ps.setInt(1, billId);
 
-				PreparedStatement stmt = conn.prepareStatement(SELECT_BY_ID)) {
+            ResultSet rs = ps.executeQuery();
 
-			stmt.setInt(1, receiptId);
+            if (rs.next()) {
+                return new Bill(
+                    rs.getInt("Bill_ID"),
+                    rs.getString("Payment_Status"),
+                    rs.getDate("Payment_Date").toLocalDate().format(format),
+                    rs.getDouble("Total_Amount")
+                );
+            }
 
-			ResultSet rs = stmt.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-			if (rs.next()) {
-				bill = new Bill(rs.getString("orderReference"),	rs.getInt("driverId"),rs.getString("paymentDate"));
-			}
+        return null;
+    }
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+    // Get all bills
+    public ArrayList<Bill> getAllBills() {
 
-		return bill;
-	}
+        ArrayList<Bill> bills = new ArrayList<>();
 
-	//GET ALL BILLS
-	public ArrayList<Bill> getAllBills() {
+        String sql = "SELECT * FROM bill";
 
-		ArrayList<Bill> bills = new ArrayList<>();
+        try (Connection conn = getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
 
-		try (Connection conn = DatabaseConnection.getConnection();
+            while (rs.next()) {
 
-				PreparedStatement stmt = conn.prepareStatement(SELECT_ALL);
+                bills.add(new Bill(
+                    rs.getInt("Bill_ID"),
+                    rs.getString("Payment_Status"),
+                    rs.getDate("Payment_Date").toLocalDate().format(format),
+                    rs.getDouble("Total_Amount")
+                ));
+            }
 
-				ResultSet rs = stmt.executeQuery()) {
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-			while (rs.next()) {
-				Bill bill = new Bill(
-						rs.getString("orderReference"),
-						rs.getInt("driverId"),
-						rs.getString("paymentDate"));
+        return bills;
+    }
 
-				bills.add(bill);
-			}
+    // Update bill
+    public boolean updateBill(Bill bill) {
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+        String sql = "UPDATE bill SET Payment_Status = ?, Payment_Date = ?, Total_Amount = ? WHERE Bill_ID = ?";
 
-		return bills;
-	}
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
-	//UPDATE BILL
-	public boolean updateBill(Bill bill) {
+            ps.setString(1, bill.getPaymentStatus());
 
-		try (Connection conn = DatabaseConnection.getConnection();
+            LocalDate date = LocalDate.parse(bill.getPaymentDate(), format);
+            ps.setDate(2, Date.valueOf(date));
 
-				PreparedStatement stmt = conn.prepareStatement(UPDATE_BILL)) {
+            ps.setDouble(3, bill.getTotalAmount());
+            ps.setInt(4, bill.getBillId());
 
-			stmt.setString(1, bill.getOrderReference());
-			stmt.setInt(2, bill.getDriverId());
-			stmt.setString(3, bill.getPaymentDate());
-			stmt.setInt(4, bill.getReceiptId());
+            return ps.executeUpdate() > 0;
 
-			int rowsUpdated = stmt.executeUpdate();
+        } catch (SQLException | java.time.format.DateTimeParseException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
-			return rowsUpdated > 0;
+    // Delete bill
+    public boolean deleteBill(int billId) {
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
-	//DELETE BILL
-	public boolean deleteBill(int receiptId) {
+        String sql = "DELETE FROM bill WHERE Bill_ID = ?";
 
-		try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
-				PreparedStatement stmt = conn.prepareStatement(DELETE_BILL)) {
+            ps.setInt(1, billId);
 
-			stmt.setInt(1, receiptId);
+            return ps.executeUpdate() > 0;
 
-			int rowsDeleted = stmt.executeUpdate();
-
-			return rowsDeleted > 0;
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

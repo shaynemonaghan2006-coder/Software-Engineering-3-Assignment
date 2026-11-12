@@ -102,4 +102,10 @@ INSERT INTO customer
 VALUES
     ('John', 'Smith', 'Main Street', '0871234567');
     
+INSERT INTO delivery_person
+	(firstName, surname, address, phoneNumber)
+VALUES
+	('Jack', 'Casey', 'Mount Street', '0897645312');
+
+    
 select * from customer;

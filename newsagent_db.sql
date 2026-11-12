@@ -2,27 +2,36 @@ CREATE DATABASE IF NOT EXISTS newsagents_db;
 USE newsagents_db;
 
 -- Drop tables in dependency order
+DROP TABLE IF EXISTS delivery_docket;
 DROP TABLE IF EXISTS order_item;
 DROP TABLE IF EXISTS publication;
 DROP TABLE IF EXISTS customer;
 DROP TABLE IF EXISTS news_agent;
 DROP TABLE IF EXISTS delivery_area;
+DROP TABLE IF EXISTS delivery_person;
+
+
+-- Delivery Person
+CREATE TABLE delivery_person(
+	deliveryPersonId INT AUTO_INCREMENT PRIMARY KEY,
+    firstName VARCHAR(50) NOT NULL,
+    surname VARCHAR(50) NOT NULL,
+    address VARCHAR(150) NOT NULL,
+    phoneNumber VARCHAR(20) NOT NULL
+);
 
 -- Delivery areas
 CREATE TABLE delivery_area (
     deliveryAreaId INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
     region VARCHAR(100) NOT NULL,
-    driverId INT NOT NULL,
+    deliveryPersonId INT NOT NULL,
     
-    FOREIGN KEY (driverId)
-        REFERENCES delivery_driver(driver_id)
+    FOREIGN KEY (deliveryPersonId)
+        REFERENCES delivery_person(deliveryPersonId)
 );
 
--- Delivery Driver 
-CREATE TABLE delivery_driver(
-	driverId INT AUTO_INCREMENT PRIMARY KEY
-);
+
 
 -- Customers
 CREATE TABLE customer (

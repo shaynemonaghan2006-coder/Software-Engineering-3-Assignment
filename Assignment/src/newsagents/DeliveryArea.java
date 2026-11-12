@@ -60,8 +60,8 @@ public class DeliveryArea {
 	}
 	
 	public boolean verifyDriverId(int id) {
-		DeliveryDriverDAO driverDAO = new DeliveryDriverDAO();
-		return driverDAO.findDriverById(id) != null && id > 0;
+		DeliveryPersonDAO driverDAO = new DeliveryPersonDAO();
+		return driverDAO.findDeliveryPersonById(id) != null && id > 0;
 	}
 	
 	public boolean createDeliveryArea(String aname, String rname, int id) {

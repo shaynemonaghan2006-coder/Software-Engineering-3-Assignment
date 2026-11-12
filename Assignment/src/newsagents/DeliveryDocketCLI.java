@@ -10,10 +10,12 @@ public class DeliveryDocketCLI {
 
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
+
         DeliveryDocketDAO deliveryDocketDAO = new DeliveryDocketDAO();
         DeliveryDocket docket;
 
         while (running) {
+
             System.out.println();
             System.out.println("=== Delivery Docket Menu ===");
             System.out.println("1 - Create Delivery Docket");
@@ -23,8 +25,8 @@ public class DeliveryDocketCLI {
             System.out.println("5 - Read all Delivery Dockets");
             System.out.println("6 - Exit");
             System.out.println();
-            System.out.print("Option: ");
 
+            System.out.print("Option: ");
             int option = Integer.parseInt(scanner.nextLine());
 
             switch (option) {
@@ -57,7 +59,7 @@ public class DeliveryDocketCLI {
 
                 if (docket != null) {
                     System.out.println("\nDelivery Docket found:");
-                    System.out.println("Docket ID: " + docket.getDocketId());
+                    System.out.println("Docket ID: " + docketId);
                     System.out.println("Delivery Date: " + docket.getDeliveryDate());
                     System.out.println("Delivery Status: " + docket.getDeliveryStatus());
                 } else {
@@ -79,11 +81,12 @@ public class DeliveryDocketCLI {
                     System.out.print("New Delivery Status: ");
                     docket.setDeliveryStatus(scanner.nextLine());
 
-                    if (deliveryDocketDAO.updateDeliveryDocket(docket)) {
+                    if (deliveryDocketDAO.updateDeliveryDocket(docket, docketId)) {
                         System.out.println("Delivery docket updated successfully.");
                     } else {
                         System.out.println("Failed to update delivery docket.");
                     }
+
                 } else {
                     System.out.println("Delivery docket not found.");
                 }
@@ -96,11 +99,13 @@ public class DeliveryDocketCLI {
                 docket = deliveryDocketDAO.findDeliveryDocketById(docketId);
 
                 if (docket != null) {
+
                     if (deliveryDocketDAO.deleteDeliveryDocket(docketId)) {
                         System.out.println("Delivery docket deleted successfully.");
                     } else {
                         System.out.println("Failed to delete delivery docket.");
                     }
+
                 } else {
                     System.out.println("Delivery docket not found.");
                 }
@@ -117,7 +122,6 @@ public class DeliveryDocketCLI {
 
                     for (DeliveryDocket currentDocket : dockets) {
                         System.out.println("--------------------");
-                        System.out.println("Docket ID: " + currentDocket.getDocketId());
                         System.out.println("Delivery Date: " + currentDocket.getDeliveryDate());
                         System.out.println("Delivery Status: " + currentDocket.getDeliveryStatus());
                     }

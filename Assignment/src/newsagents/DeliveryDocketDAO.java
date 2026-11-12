@@ -3,8 +3,22 @@ package newsagents;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class DeliveryDocketDAO {
+
+    private final String url = "jdbc:mysql://localhost:3306/newsagents_db";
+    private final String username = "root";
+    private final String password = "";
+
+    private final DateTimeFormatter format =
+            DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+    // Connect to database
+    private Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(url, username, password);
+    }
 
     private static final String INSERT_DOCKET =
             "INSERT INTO delivery_docket (deliveryDate, deliveryStatus) VALUES (?, ?)";
@@ -36,17 +50,18 @@ public class DeliveryDocketDAO {
             return false;
         }
 
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(INSERT_DOCKET)) {
 
-            stmt.setString(1, docket.getDeliveryDate());
+            LocalDate date = LocalDate.parse(docket.getDeliveryDate(), format);
+
+            stmt.setDate(1, Date.valueOf(date));
             stmt.setString(2, docket.getDeliveryStatus());
 
             int rowsInserted = stmt.executeUpdate();
-
             return rowsInserted > 0;
 
-        } catch (SQLException e) {
+        } catch (SQLException | java.time.format.DateTimeParseException e) {
             e.printStackTrace();
             return false;
         }
@@ -57,7 +72,7 @@ public class DeliveryDocketDAO {
 
         DeliveryDocket docket = null;
 
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(SELECT_BY_ID)) {
 
             stmt.setInt(1, docketId);
@@ -66,7 +81,7 @@ public class DeliveryDocketDAO {
 
             if (rs.next()) {
                 docket = new DeliveryDocket(
-                        rs.getString("deliveryDate"),
+                        rs.getDate("deliveryDate").toLocalDate().format(format),
                         rs.getString("deliveryStatus"));
             }
 
@@ -82,14 +97,14 @@ public class DeliveryDocketDAO {
 
         ArrayList<DeliveryDocket> dockets = new ArrayList<>();
 
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(SELECT_ALL);
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
 
                 DeliveryDocket docket = new DeliveryDocket(
-                        rs.getString("deliveryDate"),
+                        rs.getDate("deliveryDate").toLocalDate().format(format),
                         rs.getString("deliveryStatus"));
 
                 dockets.add(docket);
@@ -110,18 +125,19 @@ public class DeliveryDocketDAO {
             return false;
         }
 
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(UPDATE_DOCKET)) {
 
-            stmt.setString(1, docket.getDeliveryDate());
+            LocalDate date = LocalDate.parse(docket.getDeliveryDate(), format);
+
+            stmt.setDate(1, Date.valueOf(date));
             stmt.setString(2, docket.getDeliveryStatus());
             stmt.setInt(3, docketId);
 
             int rowsUpdated = stmt.executeUpdate();
-
             return rowsUpdated > 0;
 
-        } catch (SQLException e) {
+        } catch (SQLException | java.time.format.DateTimeParseException e) {
             e.printStackTrace();
             return false;
         }
@@ -130,13 +146,12 @@ public class DeliveryDocketDAO {
     // DELETE DELIVERY DOCKET
     public boolean deleteDeliveryDocket(int docketId) {
 
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(DELETE_DOCKET)) {
 
             stmt.setInt(1, docketId);
 
             int rowsDeleted = stmt.executeUpdate();
-
             return rowsDeleted > 0;
 
         } catch (SQLException e) {

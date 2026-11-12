@@ -34,7 +34,7 @@ public class DeliveryDocketCLI {
             case 1:
                 System.out.println("=== Create New Delivery Docket ===");
 
-                System.out.print("Delivery Date (YYYY-MM-DD): ");
+                System.out.print("Delivery Date (dd-mm-yyyy): ");
                 String deliveryDate = scanner.nextLine();
 
                 System.out.print("Delivery Status: ");
@@ -75,7 +75,7 @@ public class DeliveryDocketCLI {
 
                 if (docket != null) {
 
-                    System.out.print("New Delivery Date (YYYY-MM-DD): ");
+                    System.out.print("New Delivery Date (DD-MM-YYYY): ");
                     docket.setDeliveryDate(scanner.nextLine());
 
                     System.out.print("New Delivery Status: ");

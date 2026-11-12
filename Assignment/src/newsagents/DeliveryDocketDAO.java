@@ -6,136 +6,146 @@ import java.util.ArrayList;
 
 public class DeliveryDocketDAO {
 
-	private static final String INSERT_DOCKET = "INSERT INTO delivery_docket "
-			+ "(orderId, deliveryDate, deliveryStatus) "
-			+ "VALUES (?, ?, ?)";
+    private static final String INSERT_DOCKET =
+            "INSERT INTO delivery_docket (deliveryDate, deliveryStatus) VALUES (?, ?)";
 
-	private static final String SELECT_BY_ID =
-			"SELECT * FROM delivery_docket WHERE docketId = ?";
+    private static final String SELECT_BY_ID =
+            "SELECT * FROM delivery_docket WHERE docketId = ?";
 
-	private static final String SELECT_ALL =
-			"SELECT * FROM delivery_docket";
+    private static final String SELECT_ALL =
+            "SELECT * FROM delivery_docket";
 
-	private static final String UPDATE_DOCKET = "UPDATE delivery_docket "
-			+ "SET orderId=?, deliveryDate=?, deliveryStatus=? "
-			+ "WHERE docketId=?";
+    private static final String UPDATE_DOCKET =
+            "UPDATE delivery_docket SET deliveryDate=?, deliveryStatus=? WHERE docketId=?";
 
-	private static final String DELETE_DOCKET =
-			"DELETE FROM delivery_docket WHERE docketId=?";
+    private static final String DELETE_DOCKET =
+            "DELETE FROM delivery_docket WHERE docketId=?";
 
-	//CREATE DELIVERY DOCKET
-	public boolean addDeliveryDocket(DeliveryDocket docket) {
+    // VALIDATE DELIVERY STATUS
+    private boolean isValidDeliveryStatus(String deliveryStatus) {
+        return deliveryStatus != null &&
+                (deliveryStatus.equalsIgnoreCase("Delivered") ||
+                 deliveryStatus.equalsIgnoreCase("InTransit"));
+    }
 
-		try (Connection conn = DatabaseConnection.getConnection();
+    // CREATE DELIVERY DOCKET
+    public boolean addDeliveryDocket(DeliveryDocket docket) {
 
-				PreparedStatement stmt = conn.prepareStatement(INSERT_DOCKET)) {
+        if (!isValidDeliveryStatus(docket.getDeliveryStatus())) {
+            System.out.println("Invalid delivery status. Enter Delivered or InTransit.");
+            return false;
+        }
 
-			stmt.setInt(1, docket.getOrderId());
-			stmt.setString(2, docket.getDeliveryDate());
-			stmt.setString(3, docket.getDeliveryStatus());
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(INSERT_DOCKET)) {
 
-			int rowsInserted = stmt.executeUpdate();
+            stmt.setString(1, docket.getDeliveryDate());
+            stmt.setString(2, docket.getDeliveryStatus());
 
-			return rowsInserted > 0;
+            int rowsInserted = stmt.executeUpdate();
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
+            return rowsInserted > 0;
 
-	//FIND DELIVERY DOCKET BY ID
-	public DeliveryDocket findDeliveryDocketById(int docketId) {
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
-		DeliveryDocket docket = null;
+    // FIND DELIVERY DOCKET BY ID
+    public DeliveryDocket findDeliveryDocketById(int docketId) {
 
-		try (Connection conn = DatabaseConnection.getConnection();
+        DeliveryDocket docket = null;
 
-				PreparedStatement stmt = conn.prepareStatement(SELECT_BY_ID)) {
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(SELECT_BY_ID)) {
 
-			stmt.setInt(1, docketId);
+            stmt.setInt(1, docketId);
 
-			ResultSet rs = stmt.executeQuery();
+            ResultSet rs = stmt.executeQuery();
 
-			if (rs.next()) {
-				docket = new DeliveryDocket(
-						rs.getInt("orderId"),
-						rs.getString("deliveryDate"),
-						rs.getString("deliveryStatus"));
-			}
+            if (rs.next()) {
+                docket = new DeliveryDocket(
+                        rs.getString("deliveryDate"),
+                        rs.getString("deliveryStatus"));
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+                docket.setDocketId(rs.getInt("docketId"));
+            }
 
-		return docket;
-	}
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-	//GET ALL DELIVERY DOCKETS
-	public ArrayList<DeliveryDocket> getAllDeliveryDockets() {
+        return docket;
+    }
 
-		ArrayList<DeliveryDocket> dockets = new ArrayList<>();
+    // GET ALL DELIVERY DOCKETS
+    public ArrayList<DeliveryDocket> getAllDeliveryDockets() {
 
-		try (Connection conn = DatabaseConnection.getConnection();
+        ArrayList<DeliveryDocket> dockets = new ArrayList<>();
 
-				PreparedStatement stmt = conn.prepareStatement(SELECT_ALL);
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(SELECT_ALL);
+             ResultSet rs = stmt.executeQuery()) {
 
-				ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
 
-			while (rs.next()) {
-				DeliveryDocket docket = new DeliveryDocket(
-						rs.getInt("orderId"),
-						rs.getString("deliveryDate"),
-						rs.getString("deliveryStatus"));
+                DeliveryDocket docket = new DeliveryDocket(
+                        rs.getString("deliveryDate"),
+                        rs.getString("deliveryStatus"));
 
-				dockets.add(docket);
-			}
+                docket.setDocketId(rs.getInt("docketId"));
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+                dockets.add(docket);
+            }
 
-		return dockets;
-	}
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-	//UPDATE DELIVERY DOCKET
-	public boolean updateDeliveryDocket(DeliveryDocket docket) {
+        return dockets;
+    }
 
-		try (Connection conn = DatabaseConnection.getConnection();
+    // UPDATE DELIVERY DOCKET
+    public boolean updateDeliveryDocket(DeliveryDocket docket) {
 
-				PreparedStatement stmt = conn.prepareStatement(UPDATE_DOCKET)) {
+        if (!isValidDeliveryStatus(docket.getDeliveryStatus())) {
+            System.out.println("Invalid delivery status. Enter Delivered or InTransit.");
+            return false;
+        }
 
-			stmt.setInt(1, docket.getOrderId());
-			stmt.setString(2, docket.getDeliveryDate());
-			stmt.setString(3, docket.getDeliveryStatus());
-			stmt.setInt(4, docket.getDocketId());
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(UPDATE_DOCKET)) {
 
-			int rowsUpdated = stmt.executeUpdate();
+            stmt.setString(1, docket.getDeliveryDate());
+            stmt.setString(2, docket.getDeliveryStatus());
+            stmt.setInt(3, docket.getDocketId());
 
-			return rowsUpdated > 0;
+            int rowsUpdated = stmt.executeUpdate();
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
+            return rowsUpdated > 0;
 
-	//DELETE DELIVERY DOCKET
-	public boolean deleteDeliveryDocket(int docketId) {
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
-		try (Connection conn = DatabaseConnection.getConnection();
+    // DELETE DELIVERY DOCKET
+    public boolean deleteDeliveryDocket(int docketId) {
 
-				PreparedStatement stmt = conn.prepareStatement(DELETE_DOCKET)) {
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(DELETE_DOCKET)) {
 
-			stmt.setInt(1, docketId);
+            stmt.setInt(1, docketId);
 
-			int rowsDeleted = stmt.executeUpdate();
+            int rowsDeleted = stmt.executeUpdate();
 
-			return rowsDeleted > 0;
+            return rowsDeleted > 0;
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

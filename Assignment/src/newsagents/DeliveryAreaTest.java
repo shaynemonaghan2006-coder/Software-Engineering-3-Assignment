@@ -85,7 +85,7 @@ class DeliveryAreaTest {
 //	driver id rejected
 	@Test
 	void invalidDriverIdTC09() {
-		assertTrue(area.verifyDriverId(0));
+		assertFalse(area.verifyDriverId(0));
 	}
 	
 //	TC10
@@ -94,7 +94,7 @@ class DeliveryAreaTest {
 //	driver id rejected
 	@Test
 	void validDriverIdNotExistsTC10() {
-		assertTrue(area.verifyDriverId(2));
+		assertFalse(area.verifyDriverId(2));
 	}
 	
 //	TC11

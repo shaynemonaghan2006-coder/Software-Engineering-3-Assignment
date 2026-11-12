@@ -39,13 +39,13 @@ public class OrderTest {
 	}
 
 //	TC04
-//	Verify order date is accepted when it is in DDMMYYYY format
+//	Verify order date is accepted when it is in DD/MM/YYYY format
 //	Order date = 12102026
 //	Order date accepted
 	@Test
 	void validOrderDate_TC04() {
 		Order order = new Order();
-		assertTrue(order.verifyOrderDate("12102026"));
+		assertTrue(order.verifyOrderDate("12/10/2026"));
 	}
 	
 //	TC27
@@ -55,7 +55,7 @@ public class OrderTest {
 	@Test
 	void invalidOrderDate_TC27() {
 		Order order = new Order();
-		assertFalse(order.verifyOrderDate("32102026"));
+		assertFalse(order.verifyOrderDate("32/10/2026"));
 	}
 	
 //	TC05	
@@ -65,7 +65,7 @@ public class OrderTest {
 	@Test 
 	void invalidOrderDateMaxBoundary_TC05() {
 		Order order = new Order();
-		assertFalse(order.verifyOrderDate("121020261"));
+		assertFalse(order.verifyOrderDate("12/10/20261"));
 	}
 	
 //	TC06	
@@ -75,7 +75,7 @@ public class OrderTest {
 	@Test 
 	void invalidOrderDateMinBoundary_TC06() {
 		Order order = new Order();
-		assertFalse(order.verifyOrderDate("1210202"));
+		assertFalse(order.verifyOrderDate("12/10/202"));
 	}
 	
 //	TC07	
@@ -85,7 +85,7 @@ public class OrderTest {
 	@Test 
 	void invalidOrderDateWrongFormat_TC07() {
 		Order order = new Order();
-		assertFalse(order.verifyOrderDate("10312026"));
+		assertFalse(order.verifyOrderDate("10/31/2026"));
 	}
 	
 //	TC08	
@@ -237,7 +237,7 @@ public class OrderTest {
 	@Test
 	void validOrder_TC22() {
 		Order order = new Order();
-		assertTrue(order.createOrder("12102026", "Sun", 5, "1.50",1));
+		assertTrue(order.createOrder("12/10/2026", "Sun", 5, "1.50",1));
 	}
 	
 //  TC23
@@ -257,7 +257,7 @@ public class OrderTest {
 	@Test
 	void invalidOrderNoName_TC24() {
 		Order order = new Order();
-		assertFalse(order.createOrder("12102026", "", 5, "1.50",1));
+		assertFalse(order.createOrder("12/10/2026", "", 5, "1.50",1));
 	}
 	
 //  TC25
@@ -267,7 +267,7 @@ public class OrderTest {
 	@Test
 	void invalidOrderInvalidQty_TC25() {
 		Order order = new Order();
-		assertFalse(order.createOrder("12102026", "Sun", 0, "1.50",1));
+		assertFalse(order.createOrder("12/10/2026", "Sun", 0, "1.50",1));
 	}
 	
 //  TC26
@@ -277,7 +277,7 @@ public class OrderTest {
 	@Test
 	void invalidOrderInvalidPrice_TC26() {
 		Order order = new Order();
-		assertFalse(order.createOrder("12102026", "Sun", 5, "1.1",1));
+		assertFalse(order.createOrder("12/10/2026", "Sun", 5, "1.1",1));
 	}
 	
 //	TC28
@@ -287,6 +287,6 @@ public class OrderTest {
 	@Test
 	void invalidOrderCustomerId_TC28() {
 		Order order = new Order();
-		assertFalse(order.createOrder("12102026", "Sun", 5, "1.1",0));
+		assertFalse(order.createOrder("12/10/2026", "Sun", 5, "1.1",0));
 	}
 }

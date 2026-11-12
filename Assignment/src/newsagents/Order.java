@@ -21,7 +21,7 @@ public class Order {
 
 	public boolean verifyOrderDate(String orderDate) {
 		try {
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMuuuu")
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uuuu")
 					.withResolverStyle(ResolverStyle.STRICT);
 			LocalDate.parse(orderDate, formatter);
 			return true;

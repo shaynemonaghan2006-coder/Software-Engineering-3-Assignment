@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class DeliveryPersonCLI {
 
-	public static void main(String[] args) {
+	public DeliveryPersonCLI() {
 
 		Scanner scanner = new Scanner(System.in);
 		boolean running = true;

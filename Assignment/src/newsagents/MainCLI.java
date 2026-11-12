@@ -41,7 +41,7 @@ public class MainCLI {
 				break;
 				
 			case 8:
-				System.out.println("Delivery Person CLI not yet implemented");
+				new DeliveryPersonCLI();
 				break;
 			
 			case 9: 

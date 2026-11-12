@@ -16,7 +16,7 @@ public class OrderDAO {
 	private static final String SELECT_ALL = "SELECT * FROM order_item";
 	
 	private static final String UPDATE_ORDER = "UPDATE order_item "
-			+ "SET orderDate=?, productName=?, quantity=?,price=?,customerId=?" + "WHERE orderId=?";
+			+ "SET orderDate=?, productName=?, quantity=?,price=?,customerId=? WHERE orderId=?";
 	
 	private static final String DELETE_ORDER = "DELETE FROM order_item WHERE orderId=?";
 	
@@ -135,6 +135,9 @@ public class OrderDAO {
 				stmt.setString(4, order.getPrice());
 
 				stmt.setInt(5, order.getCustId());
+				
+				
+				stmt.setInt(6,  order.getOrderId());
 				rowsUpdated = stmt.executeUpdate();
 			}
 			

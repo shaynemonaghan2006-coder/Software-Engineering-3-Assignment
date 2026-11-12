@@ -7,7 +7,7 @@ public class DeliveryAreaDAO {
 
 // CREATE
 	private static final String INSERT_DELIVERY_AREA = "INSERT INTO delivery_area "
-			+ "(name, region, driverId) " + "VALUES (?, ?, ?)";
+			+ "(name, region, deliveryPersonId) " + "VALUES (?, ?, ?)";
 
 // READ ONE
 	private static final String SELECT_BY_ID = "SELECT * FROM delivery_area WHERE deliveryAreaId = ?";
@@ -17,7 +17,7 @@ public class DeliveryAreaDAO {
 
 // UPDATE
 	private static final String UPDATE_DELIVERY_AREA = "UPDATE delivery_area "
-			+ "SET name=?, region=?, driverId=?" + "WHERE deliveryAreaId=?";
+			+ "SET name=?, region=?, deliveryPersonId=? WHERE deliveryAreaId=?";
 
 // DELETE
 	private static final String DELETE_DELIVERY_AREA = "DELETE FROM delivery_area WHERE deliveryAreaId=?";
@@ -73,7 +73,7 @@ public class DeliveryAreaDAO {
 
 				area.setRegion(rs.getString("region"));
 
-				area.setDriverId(rs.getInt("driverId"));
+				area.setDriverId(rs.getInt("deliveryPersonId"));
 			}
 
 		} catch (SQLException e) {
@@ -106,7 +106,7 @@ public class DeliveryAreaDAO {
 
 				area.setRegion(rs.getString("region"));
 
-				area.setDriverId(rs.getInt("driverId"));
+				area.setDriverId(rs.getInt("deliveryPersonId"));
 
 				areas.add(area);
 			}

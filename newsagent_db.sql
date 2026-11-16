@@ -112,3 +112,15 @@ VALUES
 
     
 select * from customer;
+
+INSERT INTO publication
+    (publicationName, price, frequency, type, stockQuantity)
+VALUES
+    ('Irish Daily Star', 2.00, 7, 'Tabloid', 300),
+    ('Irish Daily Mirror', 2.50, 7, 'Tabloid', 200),
+    ('Irish Daily Mail', 3.00, 7, 'Tabloid', 250),
+    ('The Irish Sun', 3.25, 7, 'Tabloid', 275),
+    ('Irish Examiner', 2.20, 6, 'Broadsheet', 325),
+    ('Irish Independent', 4.00, 7, 'Compact', 220),
+    ('The Herald', 2.95, 6, 'Tabloid', 150),
+    ('The Irish Times', 3.75, 6, 'Broadsheet', 400);

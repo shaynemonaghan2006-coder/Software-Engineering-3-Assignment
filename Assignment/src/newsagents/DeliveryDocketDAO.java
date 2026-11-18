@@ -21,7 +21,7 @@ public class DeliveryDocketDAO {
     }
 
     private static final String INSERT_DOCKET =
-            "INSERT INTO delivery_docket (deliveryDate, deliveryStatus) VALUES (?, ?)";
+            "INSERT INTO delivery_docket (orderId, deliveryDate, deliveryStatus) VALUES (?, ?, ?)";
 
     private static final String SELECT_BY_ID =
             "SELECT * FROM delivery_docket WHERE docketId = ?";
@@ -30,7 +30,7 @@ public class DeliveryDocketDAO {
             "SELECT * FROM delivery_docket";
 
     private static final String UPDATE_DOCKET =
-            "UPDATE delivery_docket SET deliveryDate=?, deliveryStatus=? WHERE docketId=?";
+            "UPDATE delivery_docket SET orderId=?, deliveryDate=?, deliveryStatus=? WHERE docketId=?";
 
     private static final String DELETE_DOCKET =
             "DELETE FROM delivery_docket WHERE docketId=?";
@@ -54,9 +54,10 @@ public class DeliveryDocketDAO {
              PreparedStatement stmt = conn.prepareStatement(INSERT_DOCKET)) {
 
             LocalDate date = LocalDate.parse(docket.getDeliveryDate(), format);
-
-            stmt.setDate(1, Date.valueOf(date));
-            stmt.setString(2, docket.getDeliveryStatus());
+            
+            stmt.setInt(1, docket.getOrderId());
+            stmt.setDate(2, Date.valueOf(date));
+            stmt.setString(3, docket.getDeliveryStatus());
 
             int rowsInserted = stmt.executeUpdate();
             return rowsInserted > 0;
@@ -81,6 +82,7 @@ public class DeliveryDocketDAO {
 
             if (rs.next()) {
                 docket = new DeliveryDocket(
+                		rs.getInt("orderId"),
                         rs.getDate("deliveryDate").toLocalDate().format(format),
                         rs.getString("deliveryStatus"));
             }
@@ -104,6 +106,7 @@ public class DeliveryDocketDAO {
             while (rs.next()) {
 
                 DeliveryDocket docket = new DeliveryDocket(
+                		rs.getInt("orderId"),
                         rs.getDate("deliveryDate").toLocalDate().format(format),
                         rs.getString("deliveryStatus"));
 
@@ -129,10 +132,10 @@ public class DeliveryDocketDAO {
              PreparedStatement stmt = conn.prepareStatement(UPDATE_DOCKET)) {
 
             LocalDate date = LocalDate.parse(docket.getDeliveryDate(), format);
-
-            stmt.setDate(1, Date.valueOf(date));
-            stmt.setString(2, docket.getDeliveryStatus());
-            stmt.setInt(3, docketId);
+            stmt.setInt(1, docket.getOrderId());
+            stmt.setDate(2, Date.valueOf(date));
+            stmt.setString(3, docket.getDeliveryStatus());
+            stmt.setInt(4, docketId);
 
             int rowsUpdated = stmt.executeUpdate();
             return rowsUpdated > 0;

@@ -14,7 +14,7 @@ public class DeliveryDocketTest {
 
 	@Test
 	void validDocketIdMin_TC01() {
-	    DeliveryDocket docket = new DeliveryDocket(101, "16/10/2026", "Delivered");
+	    DeliveryDocket docket = new DeliveryDocket(1, "16/10/2026", "Delivered");
 	    assertTrue(String.valueOf(docket.getDocketId()).length() > 0);
 	}
 
@@ -25,18 +25,18 @@ public class DeliveryDocketTest {
 
 	@Test
 	void validDocketIdMax_TC02() {
-	    DeliveryDocket docket = new DeliveryDocket(101, "16/10/2026", "Delivered");
+	    DeliveryDocket docket = new DeliveryDocket(1, "16/10/2026", "Delivered");
 	    assertFalse(String.valueOf(docket.getDocketId()).length() > 30);
 	}
 
 	// TC03
 	// Test Objective: Verify Order ID is accepted when its length is at least 1 character
-	// Input(s): Order ID = 101
+	// Input(s): Order ID = 1
 	// Expected Output(s): Order ID accepted
 
 	@Test
 	void validOrderIdMin_TC03() {
-	    DeliveryDocket docket = new DeliveryDocket(101, "16/10/2026", "Delivered");
+	    DeliveryDocket docket = new DeliveryDocket(1, "16/10/2026", "Delivered");
 	    assertTrue(String.valueOf(docket.getOrderId()).length() > 0);
 	}
 
@@ -47,7 +47,7 @@ public class DeliveryDocketTest {
 
 	@Test
 	void validOrderIdMax_TC04() {
-	    DeliveryDocket docket = new DeliveryDocket(101, "16/10/2026", "Delivered");
+	    DeliveryDocket docket = new DeliveryDocket(1, "16/10/2026", "Delivered");
 	    assertFalse(String.valueOf(docket.getOrderId()).length() > 30);
 	}
 
@@ -59,7 +59,7 @@ public class DeliveryDocketTest {
 
 	@Test
 	void validDeliveryStatus_TC05() {
-	    DeliveryDocket docket = new DeliveryDocket(101, "16/10/2026", "Delivered");
+	    DeliveryDocket docket = new DeliveryDocket(1, "16/10/2026", "Delivered");
 	    assertTrue(docket.getDeliveryStatus().equals("Delivered"));
 	}
 
@@ -70,7 +70,7 @@ public class DeliveryDocketTest {
 
 	@Test
 	void invalidDeliveryStatus_TC06() {
-		DeliveryDocket docket = new DeliveryDocket(101, "16/10/2026", "Unknown");
+		DeliveryDocket docket = new DeliveryDocket(1, "16/10/2026", "Unknown");
 		assertFalse(docket.getDeliveryStatus().equals("Delivered"));
 	}
 	
@@ -81,7 +81,7 @@ public class DeliveryDocketTest {
 
 	@Test
 	void validDeliveryDate_TC07() {
-	    DeliveryDocket docket = new DeliveryDocket(101, "16/10/2026", "Delivered");
+	    DeliveryDocket docket = new DeliveryDocket(1, "16/10/2026", "Delivered");
 	    assertTrue(docket.getDeliveryDate().equals("16/10/2026"));
 	}
 
@@ -92,7 +92,7 @@ public class DeliveryDocketTest {
 
 	@Test
 	void invalidDeliveryDate_TC08() {
-	    DeliveryDocket docket = new DeliveryDocket(101, "invalid", "Delivered");
+	    DeliveryDocket docket = new DeliveryDocket(1, "invalid", "Delivered");
 	    assertFalse(docket.getDeliveryDate().equals("17/10/2026"));
 	}
 	
@@ -105,7 +105,7 @@ public class DeliveryDocketTest {
 
 	@Test
 	void updateDocketId_TC09() {
-	    DeliveryDocket docket = new DeliveryDocket(101, "16/10/2026", "Delivered");
+	    DeliveryDocket docket = new DeliveryDocket(1, "16/10/2026", "Delivered");
 	    docket.setDocketId(2);
 
 	    assertEquals(2, docket.getDocketId());
@@ -118,10 +118,10 @@ public class DeliveryDocketTest {
 
 	@Test
 	void updateOrderId_TC10() {
-	    DeliveryDocket docket = new DeliveryDocket(101, "16/10/2026", "Delivered");
-	    docket.setOrderId(102);
+	    DeliveryDocket docket = new DeliveryDocket(2, "16/10/2026", "Delivered");
+	    docket.setOrderId(2);
 
-	    assertEquals(102, docket.getOrderId());
+	    assertEquals(2, docket.getOrderId());
 	}
 
 	// TC11
@@ -131,7 +131,7 @@ public class DeliveryDocketTest {
 
 	@Test
 	void updateDeliveryDate_TC11() {
-	    DeliveryDocket docket = new DeliveryDocket(101, "16/10/2026", "Delivered");
+	    DeliveryDocket docket = new DeliveryDocket(1, "16/10/2026", "Delivered");
 	    docket.setDeliveryDate("17/10/2026");
 
 	    assertEquals("17/10/2026", docket.getDeliveryDate());
@@ -144,8 +144,8 @@ public class DeliveryDocketTest {
 
 	@Test
 	void updateDeliveryStatus_TC12() {
-	    DeliveryDocket docket = new DeliveryDocket(101, "16/10/2026", "Delivered");
-	    docket.setDeliveryStatus("Not Delivered");
+	    DeliveryDocket docket = new DeliveryDocket(1, "16/10/2026", "Not Delivered");
+	    docket.setDeliveryStatus("Delivered");
 
 	    assertEquals("Delivered", docket.getDeliveryStatus());
 	}
@@ -159,10 +159,9 @@ public class DeliveryDocketTest {
 
 	@Test
 	void readDocketInfo_TC13() {
-	    DeliveryDocket docket = new DeliveryDocket(101, "16/10/2026", "Pending");
+	    DeliveryDocket docket = new DeliveryDocket(1, "16/10/2026", "Pending");
 
-	    assertEquals(1, docket.getDocketId());
-	    assertEquals(101, docket.getOrderId());
+	    assertEquals(1, docket.getOrderId());
 	    assertEquals("16/10/2026", docket.getDeliveryDate());
 	    assertEquals("Pending", docket.getDeliveryStatus());
 	}

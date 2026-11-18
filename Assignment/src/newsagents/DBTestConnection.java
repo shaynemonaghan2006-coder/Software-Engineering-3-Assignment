@@ -10,7 +10,7 @@ public class DBTestConnection {
         try  {
         	Connection conn = DatabaseConnection.getConnection();
             System.out.println("Database connected successfully!");
-            
+            conn.close();
         } catch (SQLException e) {
             System.out.println("Database connection failed!");
             e.printStackTrace();

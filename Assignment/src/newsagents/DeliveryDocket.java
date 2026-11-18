@@ -2,11 +2,13 @@
 package newsagents;
 
 public class DeliveryDocket {
-
+	private int docketId;
     private String deliveryDate;
     private String deliveryStatus;
+    private int orderId;
 
-    public DeliveryDocket(String deliveryDate, String deliveryStatus) {
+    public DeliveryDocket(int orderId, String deliveryDate, String deliveryStatus) {
+    	this.orderId = orderId;
         this.deliveryDate = deliveryDate;
         this.deliveryStatus = deliveryStatus;
     }
@@ -26,6 +28,23 @@ public class DeliveryDocket {
     public void setDeliveryStatus(String deliveryStatus) {
         this.deliveryStatus = deliveryStatus;
     }
+    
+    public int getOrderId() {
+    	return orderId;
+    }
+    
+    public void setOrderId(int orderId) {
+    	this.orderId = orderId;
+    }
+    
+    public int getDocketId() {
+    	return docketId;
+    }
+    
+    public void setDocketId(int docketId) {
+    	this.docketId = docketId;
+    }
+
 
     @Override
     public String toString() {

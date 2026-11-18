@@ -9,6 +9,7 @@ DROP TABLE IF EXISTS customer;
 DROP TABLE IF EXISTS news_agent;
 DROP TABLE IF EXISTS delivery_area;
 DROP TABLE IF EXISTS delivery_person;
+DROP TABLE IF EXISTS bill;
 
 
 -- Delivery Person
@@ -89,7 +90,11 @@ CREATE TABLE order_item (
 CREATE TABLE delivery_docket (
     docketId INT AUTO_INCREMENT PRIMARY KEY,
     deliveryDate DATE NOT NULL,
-    deliveryStatus VARCHAR(20) NOT NULL
+    deliveryStatus VARCHAR(20) NOT NULL,
+    orderId INT NOT NULL,
+    
+    foreign key (orderId)	
+		References order_item(orderId)
 );
  -- Bill
 CREATE TABLE bill (

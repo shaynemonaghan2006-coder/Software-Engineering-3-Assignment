@@ -13,32 +13,25 @@ public class NewsAgentCLI {
         int choice;
 
         do {
-            System.out.println("\n===== NEWS AGENT MENU =====");
-            System.out.println("1. Add News Agent");
-            System.out.println("2. Find News Agent by ID");
-            System.out.println("3. View All News Agents");
-            System.out.println("4. Update News Agent");
-            System.out.println("5. Delete News Agent");
-            System.out.println("6. Exit");
-            System.out.print("Enter choice: ");
+        	
 
             choice = readInt();
 
             switch (choice) {
                 case 1:
-                    addNewsAgent();
+                    createNewsAgent();
                     break;
                 case 2:
-                    findNewsAgent();
+                    readNewsAgentId();
                     break;
                 case 3:
-                    viewAllNewsAgents();
-                    break;
-                case 4:
                     updateNewsAgent();
                     break;
-                case 5:
+                case 4:
                     deleteNewsAgent();
+                    break;
+                case 5:
+                    readAllNewsAgents();
                     break;
                 case 6:
                     System.out.println("Exiting News Agent Menu.");
@@ -49,11 +42,25 @@ public class NewsAgentCLI {
 
         } while (choice != 6);
     }
-
+    
+    public static int mainMenu() {
+    	System.out.println();
+        System.out.println("=== NEWS AGENT MENU ===");
+        System.out.println("1 - Create News Agent");
+        System.out.println("2 - Read News Agent by ID");
+        System.out.println("3 - Update News Agent");
+        System.out.println("4 - Delete News Agent");
+        System.out.println("5 - Read All News Agents");
+        System.out.println("6 - Exit");
+        System.out.print("Option: ");
+        int option = scanner.nextInt();
+        scanner.nextLine();
+        return option;
+    }
     //Adds a news agent
-    private static void addNewsAgent() {
+    private static void createNewsAgent() {
 
-        System.out.println("\n--- Add News Agent ---");
+        System.out.println("=== Create News Agent ===");
 
         System.out.print("Enter name: ");
         String name = scanner.nextLine();
@@ -78,22 +85,27 @@ public class NewsAgentCLI {
     }
 
     //Finds news agent by ID
-    private static void findNewsAgent() {
+    private static void readNewsAgentId() {
 
         System.out.print("Enter News Agent ID: ");
-        int id = readInt();
+        int id = scanner.nextInt(); 
 
         NewsAgent agent = dao.findNewsAgentById(id);
 
         if (agent != null) {
-            System.out.println(agent);
+            System.out.println("\nNewsAgent found: ");
+            System.out.println("ID: " + agent.getNewsAgentId());
+            System.out.println("Name: " + agent.getName());
+            System.out.println("Address: " + agent.getAddress());
+            System.out.println("Phone Number: " + agent.getPhoneNumber());
+            System.out.println("Email: " + agent.getEmail());
         } else {
             System.out.println("News agent not found.");
         }
     }
 
     //Gets all news agents
-    private static void viewAllNewsAgents() {
+    private static void readAllNewsAgents() {
 
         ArrayList<NewsAgent> agents = dao.getAllNewsAgents();
 
@@ -101,10 +113,18 @@ public class NewsAgentCLI {
             System.out.println("No news agents found.");
             return;
         }
+        else {
+        	System.out.println("\n=== All NewsAgents ===");
+        
 
-        for (NewsAgent agent : agents) {
-            System.out.println("--------------------");
-            System.out.println(agent);
+	        for (NewsAgent agent : agents) {
+	            System.out.println("--------------------");
+	            System.out.println("ID: " + agent.getNewsAgentId());
+	            System.out.println("Name: " + agent.getName());
+	            System.out.println("Address: " + agent.getAddress());
+	            System.out.println("Phone Number: " + agent.getPhoneNumber());
+	            System.out.println("Email: " + agent.getEmail());
+	        }
         }
     }
 
@@ -184,4 +204,6 @@ public class NewsAgentCLI {
             }
         }
     }
+    
+    
 }

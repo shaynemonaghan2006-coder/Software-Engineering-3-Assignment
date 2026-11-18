@@ -3,139 +3,160 @@ package newsagents;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class DeliveryDocketDAO {
 
-	private static final String INSERT_DOCKET = "INSERT INTO delivery_docket "
-			+ "(orderId, deliveryDate, deliveryStatus) "
-			+ "VALUES (?, ?, ?)";
+    private final String url = "jdbc:mysql://localhost:3306/newsagents_db";
+    private final String username = "root";
+    private final String password = "";
 
-	private static final String SELECT_BY_ID =
-			"SELECT * FROM delivery_docket WHERE docketId = ?";
+    private final DateTimeFormatter format =
+            DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-	private static final String SELECT_ALL =
-			"SELECT * FROM delivery_docket";
+    // Connect to database
+    private Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(url, username, password);
+    }
 
-	private static final String UPDATE_DOCKET = "UPDATE delivery_docket "
-			+ "SET orderId=?, deliveryDate=?, deliveryStatus=? "
-			+ "WHERE docketId=?";
+    private static final String INSERT_DOCKET =
+            "INSERT INTO delivery_docket (deliveryDate, deliveryStatus) VALUES (?, ?)";
 
-	private static final String DELETE_DOCKET =
-			"DELETE FROM delivery_docket WHERE docketId=?";
+    private static final String SELECT_BY_ID =
+            "SELECT * FROM delivery_docket WHERE docketId = ?";
 
-	//CREATE DELIVERY DOCKET
-	public boolean addDeliveryDocket(DeliveryDocket docket) {
+    private static final String SELECT_ALL =
+            "SELECT * FROM delivery_docket";
 
-		try (Connection conn = DatabaseConnection.getConnection();
+    private static final String UPDATE_DOCKET =
+            "UPDATE delivery_docket SET deliveryDate=?, deliveryStatus=? WHERE docketId=?";
 
-				PreparedStatement stmt = conn.prepareStatement(INSERT_DOCKET)) {
+    private static final String DELETE_DOCKET =
+            "DELETE FROM delivery_docket WHERE docketId=?";
 
-			stmt.setInt(1, docket.getOrderId());
-			stmt.setString(2, docket.getDeliveryDate());
-			stmt.setString(3, docket.getDeliveryStatus());
+    // VALIDATE DELIVERY STATUS
+    private boolean isValidDeliveryStatus(String deliveryStatus) {
+        return deliveryStatus != null &&
+                (deliveryStatus.equalsIgnoreCase("Delivered") ||
+                 deliveryStatus.equalsIgnoreCase("InTransit"));
+    }
 
-			int rowsInserted = stmt.executeUpdate();
+    // CREATE DELIVERY DOCKET
+    public boolean addDeliveryDocket(DeliveryDocket docket) {
 
-			return rowsInserted > 0;
+        if (!isValidDeliveryStatus(docket.getDeliveryStatus())) {
+            System.out.println("Invalid delivery status. Enter Delivered or InTransit.");
+            return false;
+        }
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(INSERT_DOCKET)) {
 
-	//FIND DELIVERY DOCKET BY ID
-	public DeliveryDocket findDeliveryDocketById(int docketId) {
+            LocalDate date = LocalDate.parse(docket.getDeliveryDate(), format);
 
-		DeliveryDocket docket = null;
+            stmt.setDate(1, Date.valueOf(date));
+            stmt.setString(2, docket.getDeliveryStatus());
 
-		try (Connection conn = DatabaseConnection.getConnection();
+            int rowsInserted = stmt.executeUpdate();
+            return rowsInserted > 0;
 
-				PreparedStatement stmt = conn.prepareStatement(SELECT_BY_ID)) {
+        } catch (SQLException | java.time.format.DateTimeParseException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
-			stmt.setInt(1, docketId);
+    // FIND DELIVERY DOCKET BY ID
+    public DeliveryDocket findDeliveryDocketById(int docketId) {
 
-			ResultSet rs = stmt.executeQuery();
+        DeliveryDocket docket = null;
 
-			if (rs.next()) {
-				docket = new DeliveryDocket(
-						rs.getInt("orderId"),
-						rs.getString("deliveryDate"),
-						rs.getString("deliveryStatus"));
-			}
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(SELECT_BY_ID)) {
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+            stmt.setInt(1, docketId);
 
-		return docket;
-	}
+            ResultSet rs = stmt.executeQuery();
 
-	//GET ALL DELIVERY DOCKETS
-	public ArrayList<DeliveryDocket> getAllDeliveryDockets() {
+            if (rs.next()) {
+                docket = new DeliveryDocket(
+                        rs.getDate("deliveryDate").toLocalDate().format(format),
+                        rs.getString("deliveryStatus"));
+            }
 
-		ArrayList<DeliveryDocket> dockets = new ArrayList<>();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-		try (Connection conn = DatabaseConnection.getConnection();
+        return docket;
+    }
 
-				PreparedStatement stmt = conn.prepareStatement(SELECT_ALL);
+    // GET ALL DELIVERY DOCKETS
+    public ArrayList<DeliveryDocket> getAllDeliveryDockets() {
 
-				ResultSet rs = stmt.executeQuery()) {
+        ArrayList<DeliveryDocket> dockets = new ArrayList<>();
 
-			while (rs.next()) {
-				DeliveryDocket docket = new DeliveryDocket(
-						rs.getInt("orderId"),
-						rs.getString("deliveryDate"),
-						rs.getString("deliveryStatus"));
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(SELECT_ALL);
+             ResultSet rs = stmt.executeQuery()) {
 
-				dockets.add(docket);
-			}
+            while (rs.next()) {
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+                DeliveryDocket docket = new DeliveryDocket(
+                        rs.getDate("deliveryDate").toLocalDate().format(format),
+                        rs.getString("deliveryStatus"));
 
-		return dockets;
-	}
+                dockets.add(docket);
+            }
 
-	//UPDATE DELIVERY DOCKET
-	public boolean updateDeliveryDocket(DeliveryDocket docket) {
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-		try (Connection conn = DatabaseConnection.getConnection();
+        return dockets;
+    }
 
-				PreparedStatement stmt = conn.prepareStatement(UPDATE_DOCKET)) {
+    // UPDATE DELIVERY DOCKET
+    public boolean updateDeliveryDocket(DeliveryDocket docket, int docketId) {
 
-			stmt.setInt(1, docket.getOrderId());
-			stmt.setString(2, docket.getDeliveryDate());
-			stmt.setString(3, docket.getDeliveryStatus());
-			stmt.setInt(4, docket.getDocketId());
+        if (!isValidDeliveryStatus(docket.getDeliveryStatus())) {
+            System.out.println("Invalid delivery status. Enter Delivered or InTransit.");
+            return false;
+        }
 
-			int rowsUpdated = stmt.executeUpdate();
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(UPDATE_DOCKET)) {
 
-			return rowsUpdated > 0;
+            LocalDate date = LocalDate.parse(docket.getDeliveryDate(), format);
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
+            stmt.setDate(1, Date.valueOf(date));
+            stmt.setString(2, docket.getDeliveryStatus());
+            stmt.setInt(3, docketId);
 
-	//DELETE DELIVERY DOCKET
-	public boolean deleteDeliveryDocket(int docketId) {
+            int rowsUpdated = stmt.executeUpdate();
+            return rowsUpdated > 0;
 
-		try (Connection conn = DatabaseConnection.getConnection();
+        } catch (SQLException | java.time.format.DateTimeParseException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
-				PreparedStatement stmt = conn.prepareStatement(DELETE_DOCKET)) {
+    // DELETE DELIVERY DOCKET
+    public boolean deleteDeliveryDocket(int docketId) {
 
-			stmt.setInt(1, docketId);
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(DELETE_DOCKET)) {
 
-			int rowsDeleted = stmt.executeUpdate();
+            stmt.setInt(1, docketId);
 
-			return rowsDeleted > 0;
+            int rowsDeleted = stmt.executeUpdate();
+            return rowsDeleted > 0;
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

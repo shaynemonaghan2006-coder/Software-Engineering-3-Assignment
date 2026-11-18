@@ -42,7 +42,7 @@ public class BillCLI {
     private boolean validAmount(double amount) {
         return Double.isFinite(amount) &&
                amount >= 0 &&
-               amount <= 999.99;
+               amount <= 99.99;
     }
 
     public BillCLI() {

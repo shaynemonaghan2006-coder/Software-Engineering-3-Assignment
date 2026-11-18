@@ -58,7 +58,7 @@ CREATE TABLE news_agent (
 -- Publications
 CREATE TABLE publication (
     publicationId INT AUTO_INCREMENT PRIMARY KEY,
-    publicationName VARCHAR(100) NOT NULL,
+    publicationName VARCHAR(100) NOT NULL UNIQUE,
     price DECIMAL(10,2) NOT NULL,
     frequency VARCHAR(30) NOT NULL,
     type VARCHAR(30) NOT NULL,
@@ -80,30 +80,23 @@ CREATE TABLE order_item (
     CHECK (quantity > 0),
     CHECK (price >= 0),
     FOREIGN KEY (customerId)
-		REFERENCES customer(customerId)
+		REFERENCES customer(customerId),
+	FOREIGN KEY (productName)
+		REFERENCES publication(publicationName)
 );
 
 -- Delivery Docket
 CREATE TABLE delivery_docket (
     docketId INT AUTO_INCREMENT PRIMARY KEY,
-    orderId INT NOT NULL,
     deliveryDate DATE NOT NULL,
-    deliveryStatus VARCHAR(20) NOT NULL,
-
-    FOREIGN KEY (orderId)
-        REFERENCES order_item(orderId)
-
+    deliveryStatus VARCHAR(20) NOT NULL
 );
  -- Bill
 CREATE TABLE bill (
-
     billId INT AUTO_INCREMENT PRIMARY KEY,
-
     paymentStatus VARCHAR(20) NOT NULL,
-
     paymentDate VARCHAR(10) NOT NULL,
-
-    totalAmount DECIMAL(10,2) NOT NULL,
+    totalAmount DECIMAL(10,2) NOT NULL
 );
 
 
@@ -112,7 +105,13 @@ select * from order_item;
 INSERT INTO customer
     (firstName, surname,address,phoneNumber)
 VALUES
-    ('John', 'Smith', 'Main Street', '0871234567');
+    ('John', 'Smith', 'Main Street', '0871234567'),
+    ('Jane', 'Doe', 'Mount Street', '0854327864'),
+    ('Jill', 'Scott', 'Patrick Street', '0891231232'),
+    ('Paul', 'Connors', 'Highfield Park', '0891212425'),
+    ('Pat', 'O\'Rourke', 'Willow Fields', '0839032145'),
+    ('Mary', 'Kavanagh', 'Golden Island', '0869472761'),
+    ('Bill', 'Billison', 'Bill Street', '0856782413');
     
 INSERT INTO delivery_person
 	(firstName, surname, address, phoneNumber)
@@ -121,3 +120,15 @@ VALUES
 
     
 select * from customer;
+
+INSERT INTO publication
+    (publicationName, price, frequency, type, stockQuantity)
+VALUES
+    ('Irish Daily Star', 2.00, 7, 'Tabloid', 300),
+    ('Irish Daily Mirror', 2.50, 7, 'Tabloid', 200),
+    ('Irish Daily Mail', 3.00, 7, 'Tabloid', 250),
+    ('The Irish Sun', 3.25, 7, 'Tabloid', 275),
+    ('Irish Examiner', 2.20, 6, 'Broadsheet', 325),
+    ('Irish Independent', 4.00, 7, 'Compact', 220),
+    ('The Herald', 2.95, 6, 'Tabloid', 150),
+    ('The Irish Times', 3.75, 6, 'Broadsheet', 400);

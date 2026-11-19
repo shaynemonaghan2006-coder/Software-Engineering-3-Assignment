@@ -70,15 +70,24 @@ public class PublicationCLI {
         System.out.print("Enter stock quantity: ");
         int stock = readInt();
 
-        Publication publication =
-                new Publication(0, name, price, frequency, type, stock);
+        //insert inStock funxtion in this if statement
 
-        if (dao.addPublication(publication)) {
-            System.out.println("Publication added successfully.");
-        } else {
+        if(dao.isValidPublicationName(name) && ){ //insert isQuantityValid function here
+            Publication publication =             //both should pass before publication object is created and passed to DAO
+            new Publication(0, name, price, frequency, type, stock);
+
+            if (dao.addPublication(publication)) {
+                System.out.println("Publication added successfully.");
+            } 
+            else 
+            {
             System.out.println("Could not add publication. Check the details.");
         }
+        else{
+            System.out.println("Publication name does not exist in the talbe");
+        }
     }
+}
 
     //Finds a Publication by ID
     private static void findPublication() {

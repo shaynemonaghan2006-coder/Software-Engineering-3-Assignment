@@ -27,6 +27,22 @@ public class PublicationDAO {
     private static final String DELETE_PUBLICATION =
             "DELETE FROM publication WHERE publicationId=?";
 
+    private boolean isValidPublicationName(String pubName) throws SQLException {
+
+    String sql = "SELECT EXISTS (SELECT 1 FROM publication WHERE publicationName = '" 
+                 + pubName + "')";
+
+    try (Statement stmt = connection.createStatement();
+         ResultSet rs = stmt.executeQuery(sql)) {
+
+        if (rs.next()) {
+            return !rs.getBoolean(1);
+        }
+    }
+
+    return false;
+}
+
     //Validates a Publication
     private boolean isValidPublication(Publication publication) {
         return publication != null

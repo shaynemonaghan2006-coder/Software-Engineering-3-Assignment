@@ -72,8 +72,8 @@ public class PublicationCLI {
 
         //insert inStock funxtion in this if statement
 
-        if(dao.isValidPublicationName(name) && ){
-            Publication publication =
+        if(dao.isValidPublicationName(name) && ){ //insert isQuantityValid function here
+            Publication publication =             //both should pass before publication object is created and passed to DAO
             new Publication(0, name, price, frequency, type, stock);
 
             if (dao.addPublication(publication)) {

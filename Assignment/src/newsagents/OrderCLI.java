@@ -35,8 +35,11 @@ public class OrderCLI {
 			case 5:
 				readAllOrders();
 				break;
+			case 6:
+                checkInventory();
+                break;
 			
-			case 6: 
+			case 7: 
 				running = exit(running);
 				break;
 			

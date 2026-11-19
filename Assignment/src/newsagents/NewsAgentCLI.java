@@ -9,7 +9,7 @@ public class NewsAgentCLI {
    static NewsAgentDAO dao = new NewsAgentDAO();
    static int newsAgentId; 
 
-    public NewsAgentCLI() {
+   public NewsAgentCLI() {
 
         
 

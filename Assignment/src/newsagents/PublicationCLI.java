@@ -72,7 +72,7 @@ public class PublicationCLI {
 
         //insert inStock funxtion in this if statement
 
-        if(dao.isValidPublicationName(name)){
+        if(dao.isValidPublicationName(name) && ){
             Publication publication =
             new Publication(0, name, price, frequency, type, stock);
 

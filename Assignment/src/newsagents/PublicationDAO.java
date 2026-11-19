@@ -15,6 +15,9 @@ public class PublicationDAO {
 
     private static final String SELECT_BY_ID =
             "SELECT * FROM publication WHERE publicationId = ?";
+    
+    private static final String SELECT_BY_NAME =
+    		"SELECT * FROM publication WHERE publicationName = ?";
 
     private static final String SELECT_ALL =
             "SELECT * FROM publication";
@@ -27,21 +30,7 @@ public class PublicationDAO {
     private static final String DELETE_PUBLICATION =
             "DELETE FROM publication WHERE publicationId=?";
 
-    private boolean isValidPublicationName(String pubName) throws SQLException {
-
-    String sql = "SELECT EXISTS (SELECT 1 FROM publication WHERE publicationName = '" 
-                 + pubName + "')";
-
-    try (Statement stmt = connection.createStatement();
-         ResultSet rs = stmt.executeQuery(sql)) {
-
-        if (rs.next()) {
-            return !rs.getBoolean(1);
-        }
-    }
-
-    return false;
-}
+    
 
     //Validates a Publication
     private boolean isValidPublication(Publication publication) {
@@ -93,6 +82,39 @@ public class PublicationDAO {
                      conn.prepareStatement(SELECT_BY_ID)) {
 
             stmt.setInt(1, publicationId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+
+                if (rs.next()) {
+                    return new Publication(
+                            rs.getInt("publicationId"),
+                            rs.getString("publicationName"),
+                            rs.getDouble("price"),
+                            rs.getString("frequency"),
+                            rs.getString("type"),
+                            rs.getInt("stockQuantity")
+                    );
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+    
+    public Publication findPublicationByName(String publicationName) {
+
+        if (publicationName.isBlank()) {
+            return null;
+        }
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt =
+                     conn.prepareStatement(SELECT_BY_NAME)) {
+
+            stmt.setString(1, publicationName);
 
             try (ResultSet rs = stmt.executeQuery()) {
 

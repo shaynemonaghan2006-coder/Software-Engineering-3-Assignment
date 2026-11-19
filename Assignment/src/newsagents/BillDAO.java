@@ -8,24 +8,17 @@ import java.time.format.DateTimeFormatter;
 
 public class BillDAO {
 
-    private final String url = "jdbc:mysql://localhost:3306/newsagents_db";
-    private final String username = "root";
-    private final String password = "";
-
+    
     private final DateTimeFormatter format =
-        DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-    // Connect to database
-    private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(url, username, password);
-    }
 
     // Add bill
     public boolean addBill(Bill bill) {
 
         String sql = "INSERT INTO bill (Payment_Status, Payment_Date, Total_Amount) VALUES (?, ?, ?)";
 
-        try (Connection conn = getConnection();
+        try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, bill.getPaymentStatus());
@@ -48,7 +41,7 @@ public class BillDAO {
 
         String sql = "SELECT * FROM bill WHERE Bill_ID = ?";
 
-        try (Connection conn = getConnection();
+        try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, billId);
@@ -78,7 +71,7 @@ public class BillDAO {
 
         String sql = "SELECT * FROM bill";
 
-        try (Connection conn = getConnection();
+        try (Connection conn = DatabaseConnection.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -104,7 +97,7 @@ public class BillDAO {
 
         String sql = "UPDATE bill SET Payment_Status = ?, Payment_Date = ?, Total_Amount = ? WHERE Bill_ID = ?";
 
-        try (Connection conn = getConnection();
+        try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, bill.getPaymentStatus());
@@ -128,7 +121,7 @@ public class BillDAO {
 
         String sql = "DELETE FROM bill WHERE Bill_ID = ?";
 
-        try (Connection conn = getConnection();
+        try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, billId);

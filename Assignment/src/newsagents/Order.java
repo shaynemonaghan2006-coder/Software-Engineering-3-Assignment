@@ -102,6 +102,11 @@ public class Order {
 		CustomerDAO customerDAO = new CustomerDAO();
 		return customerDAO.findCustomerById(id) != null && id > 0;
 	}
+	
+	public boolean verifyPublicationName(String name) {
+		PublicationDAO publicationDAO = new PublicationDAO();
+		return publicationDAO.findPublicationByName(name) != null && !name.trim().isEmpty();
+	}
 
 	public double totalPrice(int qty, String price) {
 		Double newPrice = Double.parseDouble(price);
@@ -109,7 +114,7 @@ public class Order {
 	}
 
 	public boolean createOrder(String orderDate, String pName, int qty, String price, int custId) {
-		if (verifyProductName(pName) && verifyOrderDate(orderDate) && verifyQuantity(qty) && verifyPrice(price) && verifyCustomerId(custId)) {
+		if (verifyPublicationName(pName) && verifyOrderDate(orderDate) && verifyQuantity(qty) && verifyPrice(price) && verifyCustomerId(custId)) {
 			return true;
 		}
 		return false;

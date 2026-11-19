@@ -8,17 +8,9 @@ import java.time.format.DateTimeFormatter;
 
 public class DeliveryDocketDAO {
 
-    private final String url = "jdbc:mysql://localhost:3306/newsagents_db";
-    private final String username = "root";
-    private final String password = "";
-
     private final DateTimeFormatter format =
-            DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-    // Connect to database
-    private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(url, username, password);
-    }
 
     private static final String INSERT_DOCKET =
             "INSERT INTO delivery_docket (orderId, deliveryDate, deliveryStatus) VALUES (?, ?, ?)";
@@ -50,7 +42,7 @@ public class DeliveryDocketDAO {
             return false;
         }
 
-        try (Connection conn = getConnection();
+        try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(INSERT_DOCKET)) {
 
             LocalDate date = LocalDate.parse(docket.getDeliveryDate(), format);
@@ -73,7 +65,7 @@ public class DeliveryDocketDAO {
 
         DeliveryDocket docket = null;
 
-        try (Connection conn = getConnection();
+        try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(SELECT_BY_ID)) {
 
             stmt.setInt(1, docketId);
@@ -99,7 +91,7 @@ public class DeliveryDocketDAO {
 
         ArrayList<DeliveryDocket> dockets = new ArrayList<>();
 
-        try (Connection conn = getConnection();
+        try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(SELECT_ALL);
              ResultSet rs = stmt.executeQuery()) {
 
@@ -128,7 +120,7 @@ public class DeliveryDocketDAO {
             return false;
         }
 
-        try (Connection conn = getConnection();
+        try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(UPDATE_DOCKET)) {
 
             LocalDate date = LocalDate.parse(docket.getDeliveryDate(), format);
@@ -149,7 +141,7 @@ public class DeliveryDocketDAO {
     // DELETE DELIVERY DOCKET
     public boolean deleteDeliveryDocket(int docketId) {
 
-        try (Connection conn = getConnection();
+        try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(DELETE_DOCKET)) {
 
             stmt.setInt(1, docketId);

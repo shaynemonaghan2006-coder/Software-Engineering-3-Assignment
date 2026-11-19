@@ -67,6 +67,25 @@ public class OrderCLI {
 		scanner.nextLine();
 		return option;
 	}
+
+	public static void checkInventory() {
+
+        System.out.println("=== Check & Reduce Stock ===");
+
+        System.out.print("Publication Name: ");
+        String name = scanner.nextLine();
+
+        System.out.print("Amount Needed: ");
+        int amountNeeded = scanner.nextInt();
+        scanner.nextLine();
+
+        if (publicationDAO.validatingInventoary(amountNeeded, name)) {
+            System.out.println("Stock updated. " + amountNeeded
+                    + " copies of " + name + " removed.");
+        } else {
+            System.out.println("Not enough stock, or publication not found.");
+        }
+    }
 	
 	public static void createOrder() {
 		System.out.println("=== Create New Order ===");

@@ -83,17 +83,18 @@ public class OrderCLI {
 
 		System.out.print("Price: ");
 		String price = scanner.nextLine();
-		
-		order = new Order(OrderDate,productName,quantity,price,custId);
 
-		orderDAO = new OrderDAO();
-
-		if (orderDAO.addOrder(order)) {
-			System.out.println("Order saved successfully.");
-		} else {
-			System.out.println("Failed to save order.");
+		if (publication.verifyPublicationName(name) && publication.verifyStockQuantity(stock)) {
+			order = new Order(OrderDate,productName,quantity,price,custId);
+			
+			orderDAO = new OrderDAO();
+			
+			if (orderDAO.addOrder(order)) {
+				System.out.println("Order saved successfully.");
+			} else {
+				System.out.println("Failed to save order.");
+			}
 		}
-
 	}
 	
 	public static void readOrderId() {

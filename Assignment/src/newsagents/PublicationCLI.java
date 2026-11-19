@@ -40,10 +40,6 @@ public class PublicationCLI {
                 break;
 
             case 6:
-                checkInventory();
-                break;
-
-            case 7:
                 running = exit(running);
                 break;
 
@@ -211,25 +207,7 @@ public class PublicationCLI {
         }
     }
 
-        // Check & Reduce Stock
-    public static void checkInventory() {
 
-        System.out.println("=== Check & Reduce Stock ===");
-
-        System.out.print("Publication Name: ");
-        String name = scanner.nextLine();
-
-        System.out.print("Amount Needed: ");
-        int amountNeeded = scanner.nextInt();
-        scanner.nextLine();
-
-        if (publicationDAO.validatingInventoary(amountNeeded, name)) {
-            System.out.println("Stock updated. " + amountNeeded
-                    + " copies of " + name + " removed.");
-        } else {
-            System.out.println("Not enough stock, or publication not found.");
-        }
-    }
 
     // Exit Menu
     public static boolean exit(boolean running) {

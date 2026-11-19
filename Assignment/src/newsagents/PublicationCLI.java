@@ -91,19 +91,12 @@ public class PublicationCLI {
         int stock = scanner.nextInt();
         scanner.nextLine();
 
-        if (publication.verifyPublicationName(name)
-                && publication.verifyStockQuantity(stock)) {
-
-            publication = new Publication(0, name, price, frequency, type, stock);
-
-            if (publicationDAO.addPublication(publication)) {
-                System.out.println("Publication added successfully.");
-            } else {
-                System.out.println("Failed to add publication.");
-            }
-
+        publication = new Publication(0, name, price, frequency, type, stock);
+        
+        if (publicationDAO.addPublication(publication)) {
+            System.out.println("Publication added successfully.");
         } else {
-            System.out.println("Invalid publication name or stock quantity.");
+            System.out.println("Failed to add publication.");
         }
     }
 

@@ -70,13 +70,19 @@ public class PublicationCLI {
         System.out.print("Enter stock quantity: ");
         int stock = readInt();
 
-        Publication publication =
+        //insert inStock funxtion in this if statement
+
+        if(dao.isValidPublicationName(name)){
+                    Publication publication =
                 new Publication(0, name, price, frequency, type, stock);
 
-        if (dao.addPublication(publication)) {
-            System.out.println("Publication added successfully.");
-        } else {
+            if (dao.addPublication(publication)) {
+                System.out.println("Publication added successfully.");
+            } 
+            else 
+            {
             System.out.println("Could not add publication. Check the details.");
+            }
         }
     }
 

@@ -5,19 +5,20 @@ import java.util.Scanner;
 
 public class NewsAgentCLI {
 
-    private static final Scanner scanner = new Scanner(System.in);
-    private static final NewsAgentDAO dao = new NewsAgentDAO();
+   static Scanner scanner = new Scanner(System.in);
+   static NewsAgentDAO dao = new NewsAgentDAO();
+   static int newsAgentId; 
 
     public NewsAgentCLI() {
 
-        int choice;
+        
 
-        do {
+        boolean running = true;
         	
+        while(running) {
+            int option = mainMenu();
 
-            choice = readInt();
-
-            switch (choice) {
+            switch (option) {
                 case 1:
                     createNewsAgent();
                     break;
@@ -34,13 +35,13 @@ public class NewsAgentCLI {
                     readAllNewsAgents();
                     break;
                 case 6:
-                    System.out.println("Exiting News Agent Menu.");
+                    running = exit(running);
                     break;
                 default:
-                    System.out.println("Invalid choice. Try again.");
+                    System.out.println("Invalid option chosen.");
             }
 
-        } while (choice != 6);
+        } 
     }
     
     public static int mainMenu() {
@@ -132,7 +133,7 @@ public class NewsAgentCLI {
     private static void updateNewsAgent() {
 
         System.out.print("Enter News Agent ID to update: ");
-        int id = readInt();
+        int id = scanner.nextInt();
 
         NewsAgent existing = dao.findNewsAgentById(id);
 
@@ -170,7 +171,7 @@ public class NewsAgentCLI {
     private static void deleteNewsAgent() {
 
         System.out.print("Enter News Agent ID to delete: ");
-        int id = readInt();
+        int id = scanner.nextInt();
 
         NewsAgent existing = dao.findNewsAgentById(id);
 
@@ -193,17 +194,14 @@ public class NewsAgentCLI {
             System.out.println("Deletion cancelled.");
         }
     }
+    
+    public static boolean exit(boolean running ) {
+		running = false;
+		System.out.println("Have a nice day!");
+		return running;
+	}
 
-    //Reads an integer
-    private static int readInt() {
-        while (true) {
-            try {
-                return Integer.parseInt(scanner.nextLine().trim());
-            } catch (NumberFormatException e) {
-                System.out.print("Please enter a valid number: ");
-            }
-        }
-    }
+    
     
     
 }

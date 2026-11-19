@@ -73,8 +73,8 @@ public class PublicationCLI {
         //insert inStock funxtion in this if statement
 
         if(dao.isValidPublicationName(name)){
-                    Publication publication =
-                new Publication(0, name, price, frequency, type, stock);
+            Publication publication =
+            new Publication(0, name, price, frequency, type, stock);
 
             if (dao.addPublication(publication)) {
                 System.out.println("Publication added successfully.");
@@ -82,9 +82,12 @@ public class PublicationCLI {
             else 
             {
             System.out.println("Could not add publication. Check the details.");
-            }
+        }
+        else{
+            System.out.println("Publication name does not exist in the talbe");
         }
     }
+}
 
     //Finds a Publication by ID
     private static void findPublication() {

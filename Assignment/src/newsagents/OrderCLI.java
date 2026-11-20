@@ -35,11 +35,8 @@ public class OrderCLI {
 			case 5:
 				readAllOrders();
 				break;
-			case 6:
-                checkInventory();
-                break;
 			
-			case 7: 
+			case 6: 
 				running = exit(running);
 				break;
 			
@@ -68,24 +65,24 @@ public class OrderCLI {
 		return option;
 	}
 
-	public static void checkInventory() {
-
-        System.out.println("=== Check & Reduce Stock ===");
-
-        System.out.print("Publication Name: ");
-        String name = scanner.nextLine();
-
-        System.out.print("Amount Needed: ");
-        int amountNeeded = scanner.nextInt();
-        scanner.nextLine();
-
-        if (publicationDAO.validatingInventoary(amountNeeded, name)) {
-            System.out.println("Stock updated. " + amountNeeded
-                    + " copies of " + name + " removed.");
-        } else {
-            System.out.println("Not enough stock, or publication not found.");
-        }
-    }
+//	public static void checkInventory() {
+//
+//        System.out.println("=== Check & Reduce Stock ===");
+//
+//        System.out.print("Publication Name: ");
+//        String name = scanner.nextLine();
+//
+//        System.out.print("Amount Needed: ");
+//        int amountNeeded = scanner.nextInt();
+//        scanner.nextLine();
+//
+//        if (publicationDAO.validatingInventoary(amountNeeded, name)) {
+//            System.out.println("Stock updated. " + amountNeeded
+//                    + " copies of " + name + " removed.");
+//        } else {
+//            System.out.println("Not enough stock, or publication not found.");
+//        }
+//    }
 	
 	public static void createOrder() {
 		System.out.println("=== Create New Order ===");
@@ -99,24 +96,29 @@ public class OrderCLI {
 		System.out.print("Quantity: ");
 		int quantity = scanner.nextInt();
 		
+		
+		
 		System.out.print("Customer ID: ");
 		int custId = scanner.nextInt();
 		scanner.nextLine();
 
-		System.out.print("Price: ");
-		String price = scanner.nextLine();
-
-		if (publication.verifyPublicationName(name) && publication.verifyStockQuantity(stock)) {
-			order = new Order(OrderDate,productName,quantity,price,custId);
+		
+		order = new Order(OrderDate,productName,quantity,custId);
 			
-			orderDAO = new OrderDAO();
+		orderDAO = new OrderDAO();
 			
-			if (orderDAO.addOrder(order)) {
-				System.out.println("Order saved successfully.");
-			} else {
-				System.out.println("Failed to save order.");
-			}
+		if (orderDAO.addOrder(order)) {
+			System.out.println("Order saved successfully.");
+		} else {
+			System.out.println("Failed to save order.");
 		}
+		PublicationDAO pDAO = new PublicationDAO();
+		if (pDAO.updateStock(productName, quantity)) {
+            System.out.println("Order saved successfully.");
+        } else {
+            System.out.println("Order saved, but stock update failed.");
+        }
+		
 	}
 	
 	public static void readOrderId() {
@@ -160,8 +162,6 @@ public class OrderCLI {
 			order.setCustId(scanner.nextInt());
 			scanner.nextLine();
 			
-			System.out.print("New price: ");
-			order.setPrice(scanner.nextLine());
 			
 			if (orderDAO.updateOrder(order)) {
 				System.out.println("Order updated successfully.");

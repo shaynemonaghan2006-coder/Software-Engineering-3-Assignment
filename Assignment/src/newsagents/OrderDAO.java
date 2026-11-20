@@ -19,34 +19,6 @@ public class OrderDAO {
 			+ "SET orderDate=?, productName=?, quantity=?,price=?,customerId=? WHERE orderId=?";
 	
 	private static final String DELETE_ORDER = "DELETE FROM order_item WHERE orderId=?";
-
-	//Validates inventory and subtracts the amount needed from stock
-    private boolean validatingInventory(int amountNeeded, String publicationName) {
-
-        if (amountNeeded <= 0 || publicationName == null
-                || publicationName.isBlank()) {
-            return false;
-        }
-
-        String sql = "UPDATE publication "
-                + "SET stockQuantity = stockQuantity - ? "
-                + "WHERE publicationName = ? AND stockQuantity >= ?";
-
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setInt(1, amountNeeded);
-            stmt.setString(2, publicationName);
-            stmt.setInt(3, amountNeeded);
-
-            // 0 rows updated = publication not found, or stock would go below 0
-            return stmt.executeUpdate() > 0;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
 	
 	
 	/**
@@ -58,7 +30,7 @@ public class OrderDAO {
 
 			PreparedStatement stmt = conn.prepareStatement(INSERT_ORDER)) {
 			int rowsInserted = 0;
-			if(order.createOrder(order.getOrderDate(),order.getProductName(),order.getQuantity(),order.getPrice(),order.getCustId())) {
+			if(order.createOrder(order.getOrderDate(),order.getProductName(),order.getQuantity(),order.getCustId())) {
 				stmt.setString(1, order.getOrderDate() );
 
 				stmt.setString(2, order.getProductName());
@@ -153,7 +125,7 @@ public class OrderDAO {
 			PreparedStatement stmt = conn.prepareStatement(UPDATE_ORDER)) {
 			
 			int rowsUpdated = 0;
-			if(order.createOrder(order.getOrderDate(),order.getProductName(),order.getQuantity(),order.getPrice(),order.getCustId())) {
+			if(order.createOrder(order.getOrderDate(),order.getProductName(),order.getQuantity(),order.getCustId())) {
 				stmt.setString(1, order.getOrderDate() );
 
 				stmt.setString(2, order.getProductName());

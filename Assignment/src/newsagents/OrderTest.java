@@ -131,12 +131,12 @@ public class OrderTest {
 	
 //	TC12
 //	Verify customer id is rejected if the customer with the id doesn't exist
-//	custId=2
+//	custId=20
 //	Customer id doesn't exist
 	@Test
 	void nonExistingCustomerId_TC12() {
 	    Order order = new Order();
-	    assertFalse(order.verifyCustomerId(2));
+	    assertFalse(order.verifyCustomerId(20));
 	}
 	
 //	Tc13
@@ -237,7 +237,7 @@ public class OrderTest {
 	@Test
 	void validOrder_TC22() {
 		Order order = new Order();
-		assertTrue(order.createOrder("12/10/2026", "Sun", 5, "1.50",1));
+		assertTrue(order.createOrder("12/10/2026", "The Herald", 5,1));
 	}
 	
 //  TC23
@@ -247,7 +247,7 @@ public class OrderTest {
 	@Test
 	void invalidOrderNoDate_TC23() {
 		Order order = new Order();
-		assertFalse(order.createOrder("", "Sun", 5, "1.50",1));
+		assertFalse(order.createOrder("", "The Herald", 5,1));
 	}
 	
 //  TC24
@@ -257,7 +257,7 @@ public class OrderTest {
 	@Test
 	void invalidOrderNoName_TC24() {
 		Order order = new Order();
-		assertFalse(order.createOrder("12/10/2026", "", 5, "1.50",1));
+		assertFalse(order.createOrder("12/10/2026", "Herald", 5,1));
 	}
 	
 //  TC25
@@ -267,18 +267,10 @@ public class OrderTest {
 	@Test
 	void invalidOrderInvalidQty_TC25() {
 		Order order = new Order();
-		assertFalse(order.createOrder("12/10/2026", "Sun", 0, "1.50",1));
+		assertFalse(order.createOrder("12/10/2026", "The Herald", 0,1));
 	}
 	
-//  TC26
-//	Verify order creation fails when product price is invalid
-//	12102026, Sun, 5, 1.1, 1
-//	Order not created
-	@Test
-	void invalidOrderInvalidPrice_TC26() {
-		Order order = new Order();
-		assertFalse(order.createOrder("12/10/2026", "Sun", 5, "1.1",1));
-	}
+
 	
 //	TC28
 //	Verify order creation fails when customer id is invalid
@@ -287,6 +279,6 @@ public class OrderTest {
 	@Test
 	void invalidOrderCustomerId_TC28() {
 		Order order = new Order();
-		assertFalse(order.createOrder("12/10/2026", "Sun", 5, "1.1",0));
+		assertFalse(order.createOrder("12/10/2026", "The Herald", 5,0));
 	}
 }

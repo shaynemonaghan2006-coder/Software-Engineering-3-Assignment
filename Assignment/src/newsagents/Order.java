@@ -107,24 +107,53 @@ public class Order {
 		PublicationDAO publicationDAO = new PublicationDAO();
 		return publicationDAO.findPublicationByName(name) != null && !name.trim().isEmpty();
 	}
+	
+	public boolean verifyEnoughStock(String name, int stock) {
+
+	    PublicationDAO pDao = new PublicationDAO();
+	    Publication p = pDao.findPublicationByName(name);
+
+	    if (p == null) {
+	        return false;
+	    }
+
+	    return p.getStockQuantity() >= stock;
+	}
 
 	public double totalPrice(int qty, String price) {
 		Double newPrice = Double.parseDouble(price);
 		return qty * newPrice;
 	}
 
-	public boolean createOrder(String orderDate, String pName, int qty, String price, int custId) {
-		if (verifyPublicationName(pName) && verifyOrderDate(orderDate) && verifyQuantity(qty) && verifyPrice(price) && verifyCustomerId(custId)) {
-			return true;
-		}
-		return false;
+	public boolean createOrder(String orderDate, String pName, int qty, int custId) {
+
+	    if (!verifyOrderDate(orderDate)
+	            || !verifyProductName(pName)
+	            || !verifyQuantity(qty)
+	            || custId <= 0) {
+	        return false;
+	    }
+
+	    PublicationDAO publicationDAO = new PublicationDAO();
+	    Publication publication = publicationDAO.findPublicationByName(pName);
+
+	    if (publication == null) {
+	        return false;
+	    }
+
+	    if (!verifyCustomerId(custId) || !verifyEnoughStock(pName, qty)) {
+	        return false;
+	    }
+
+	    this.price = String.valueOf(publication.getPrice());
+
+	    return true;
 	}
 
-	public Order(String orderDate, String productName, int quantity, String price, int custId) {
+	public Order(String orderDate, String productName, int quantity, int custId) {
 		super();
 		this.orderDate = orderDate;
 		this.productName = productName;
-		this.price = price;
 		this.quantity = quantity;
 		this.customerId = custId;
 	}

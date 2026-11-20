@@ -27,7 +27,7 @@ public class BillCLI {
     private boolean validDate(String date) {
         try {
             DateTimeFormatter format =
-                DateTimeFormatter.ofPattern("dd-MM-uuuu")
+                DateTimeFormatter.ofPattern("dd/MM/uuuu")
                     .withResolverStyle(ResolverStyle.STRICT);
 
             LocalDate.parse(date, format);
@@ -77,7 +77,7 @@ public class BillCLI {
                             break;
                         }
 
-                        System.out.println("Enter Payment Date (DD-MM-YYYY):");
+                        System.out.println("Enter Payment Date (DD/MM/YYYY):");
                         String date = scanner.nextLine();
 
                         if (!validDate(date)) {
@@ -150,7 +150,7 @@ public class BillCLI {
                             break;
                         }
 
-                        System.out.println("Enter Payment Date (DD-MM-YYYY):");
+                        System.out.println("Enter Payment Date (DD/MM/YYYY):");
                         String newDate = scanner.nextLine();
 
                         if (!validDate(newDate)) {

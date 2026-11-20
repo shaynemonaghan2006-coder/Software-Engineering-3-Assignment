@@ -16,7 +16,7 @@ public class BillDAO {
     // Add bill
     public boolean addBill(Bill bill) {
 
-        String sql = "INSERT INTO bill (Payment_Status, Payment_Date, Total_Amount) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO bill (paymentStatus, paymentDate, totalAmount) VALUES (?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -39,7 +39,7 @@ public class BillDAO {
     // Find bill by ID
     public Bill findBillById(int billId) {
 
-        String sql = "SELECT * FROM bill WHERE Bill_ID = ?";
+        String sql = "SELECT * FROM bill WHERE billId = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -50,10 +50,10 @@ public class BillDAO {
 
             if (rs.next()) {
                 return new Bill(
-                    rs.getInt("Bill_ID"),
-                    rs.getString("Payment_Status"),
-                    rs.getDate("Payment_Date").toLocalDate().format(format),
-                    rs.getDouble("Total_Amount")
+                    rs.getInt("billId"),
+                    rs.getString("paymentStatus"),
+                    rs.getDate("paymentDate").toLocalDate().format(format),
+                    rs.getDouble("totalAmount")
                 );
             }
 
@@ -78,10 +78,10 @@ public class BillDAO {
             while (rs.next()) {
 
                 bills.add(new Bill(
-                    rs.getInt("Bill_ID"),
-                    rs.getString("Payment_Status"),
-                    rs.getDate("Payment_Date").toLocalDate().format(format),
-                    rs.getDouble("Total_Amount")
+                    rs.getInt("billId"),
+                    rs.getString("paymentStatus"),
+                    rs.getDate("paymentDate").toLocalDate().format(format),
+                    rs.getDouble("totalAmount")
                 ));
             }
 
@@ -95,7 +95,7 @@ public class BillDAO {
     // Update bill
     public boolean updateBill(Bill bill) {
 
-        String sql = "UPDATE bill SET Payment_Status = ?, Payment_Date = ?, Total_Amount = ? WHERE Bill_ID = ?";
+        String sql = "UPDATE bill SET paymentStatus = ?, paymentDate = ?, totalAmount = ? WHERE billId = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -119,7 +119,7 @@ public class BillDAO {
     // Delete bill
     public boolean deleteBill(int billId) {
 
-        String sql = "DELETE FROM bill WHERE Bill_ID = ?";
+        String sql = "DELETE FROM bill WHERE billId = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {

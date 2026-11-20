@@ -77,16 +77,18 @@ public class Publication {
         return name != null && !name.trim().isEmpty();
     }
 
-    public boolean verifyPrice(String string) {
-    	if (price == null || price.trim().isEmpty()) {
-			return false;
-		}
+    public boolean verifyPrice(String price) {
 
-		if (price.matches("\\d+\\.\\d{2}") && Double.parseDouble(price) > 0) {
-			return true;
-		}
+        if (price == null || price.trim().isEmpty()) {
+            return false;
+        }
 
-		return false;
+        if (price.matches("\\d+\\.\\d{2}") 
+                && Double.parseDouble(price) > 0) {
+            return true;
+        }
+
+        return false;
     }
 
     public boolean verifyFrequency(String frequency) {

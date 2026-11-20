@@ -61,9 +61,13 @@ public class DeliveryPersonCLI {
 		System.out.println("6 - Exit");
 		System.out.println();
 		System.out.print("Option: ");
-		int option = scanner.nextInt();
-		scanner.nextLine();
-		return option;
+		try {
+	        int option = Integer.parseInt(scanner.nextLine());
+	        return option;
+	    } catch (NumberFormatException e) {
+	        System.out.println("Invalid option. Please enter a number.");
+	        return -1;
+	    }
 	}
 	
 	public static void createDeliveryPerson() {

@@ -71,9 +71,13 @@ public class MainCLI {
 		System.out.println("9 - Exit");
 		System.out.println();
 		System.out.print("Option: ");
-		int option = scanner.nextInt();
-		scanner.nextLine();
-		return option;
+		try {
+	        int option = Integer.parseInt(scanner.nextLine());
+	        return option;
+	    } catch (NumberFormatException e) {
+	        System.out.println("Invalid option. Please enter a number.");
+	        return -1;
+	    }
 	}
 	
 	public static boolean exit(boolean running ) {

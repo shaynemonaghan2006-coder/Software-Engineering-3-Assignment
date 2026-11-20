@@ -54,9 +54,13 @@ public class NewsAgentCLI {
         System.out.println("5 - Read All News Agents");
         System.out.println("6 - Exit");
         System.out.print("Option: ");
-        int option = scanner.nextInt();
-        scanner.nextLine();
-        return option;
+        try {
+	        int option = Integer.parseInt(scanner.nextLine());
+	        return option;
+	    } catch (NumberFormatException e) {
+	        System.out.println("Invalid option. Please enter a number.");
+	        return -1;
+	    }
     }
     //Adds a news agent
     private static void createNewsAgent() {

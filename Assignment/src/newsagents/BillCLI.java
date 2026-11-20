@@ -9,22 +9,89 @@ import java.time.format.ResolverStyle;
 
 public class BillCLI {
 
-    private Scanner scanner = new Scanner(System.in);
-    private BillDAO billDAO = new BillDAO();
+    static Scanner scanner = new Scanner(System.in);
+    static BillDAO billDAO = new BillDAO();
+    static Bill bill;
+    static int billId;
+
+    public BillCLI() {
+
+        boolean running = true;
+
+        while (running) {
+
+            int option = mainMenu();
+
+            switch (option) {
+
+            case 1:
+                addBill();
+                break;
+
+            case 2:
+                findBill();
+                break;
+
+            case 3:
+                updateBill();
+                break;
+
+            case 4:
+                deleteBill();
+                break;
+
+            case 5:
+                displayAllBills();
+                break;
+
+            case 6:
+                running = exit(running);
+                break;
+
+            default:
+                System.out.println("Invalid option chosen.");
+                break;
+            }
+        }
+    }
+
+    public static int mainMenu() {
+
+        System.out.println();
+        System.out.println("=== Bill Menu ===");
+        System.out.println("1 - Add Bill");
+        System.out.println("2 - Find Bill");
+        System.out.println("3 - Update Bill");
+        System.out.println("4 - Delete Bill");
+        System.out.println("5 - Display All Bills");
+        System.out.println("6 - Exit");
+        System.out.println();
+        System.out.print("Option: ");
+
+        try {
+            int option = Integer.parseInt(scanner.nextLine());
+            return option;
+
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid option. Please enter a number.");
+            return -1;
+        }
+    }
 
     // Check bill ID
-    private boolean validBillId(int id) {
+    public static boolean validBillId(int id) {
         return id >= 1;
     }
 
     // Check payment status
-    private boolean validStatus(String status) {
+    public static boolean validStatus(String status) {
         return status.equals("paid") ||
                status.equals("pending");
     }
 
     // Check payment date
-    private boolean validDate(String date) {
+    public static boolean validDate(String date) {
+
         try {
             DateTimeFormatter format =
                 DateTimeFormatter.ofPattern("dd/MM/uuuu")
@@ -39,202 +106,212 @@ public class BillCLI {
     }
 
     // Check total amount
-    private boolean validAmount(double amount) {
+    public static boolean validAmount(double amount) {
         return Double.isFinite(amount) &&
                amount >= 0 &&
                amount <= 99.99;
     }
 
-    public BillCLI() {
+    // ADD BILL
+    public static void addBill() {
 
-        int option = 0;
+        System.out.println("=== Add New Bill ===");
 
-        while (option != 6) {
+        System.out.println("Enter Payment Status:");
+        String status = scanner.nextLine();
 
-            System.out.println("\n=== Bill Menu ===");
-            System.out.println("1. Add Bill");
-            System.out.println("2. Find Bill");
-            System.out.println("3. Update Bill");
-            System.out.println("4. Delete Bill");
-            System.out.println("5. Display All Bills");
-            System.out.println("6. Exit");
-            System.out.println("Enter your choice:");
+        if (!validStatus(status)) {
+            System.out.println("Invalid Payment Status.");
+            return;
+        }
 
-            try {
+        System.out.println("Enter Payment Date (DD/MM/YYYY):");
+        String date = scanner.nextLine();
 
-                option = Integer.parseInt(scanner.nextLine());
+        if (!validDate(date)) {
+            System.out.println("Invalid Payment Date.");
+            return;
+        }
 
-                switch (option) {
+        System.out.println("Enter Total Amount:");
 
-                    // ADD BILL
-                    case 1:
+        double amount;
 
-                        System.out.println("Enter Payment Status:");
-                        String status = scanner.nextLine();
+        try {
+            amount = Double.parseDouble(scanner.nextLine());
 
-                        if (!validStatus(status)) {
-                            System.out.println("Invalid Payment Status.");
-                            break;
-                        }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid Total Amount.");
+            return;
+        }
 
-                        System.out.println("Enter Payment Date (DD/MM/YYYY):");
-                        String date = scanner.nextLine();
+        if (!validAmount(amount)) {
+            System.out.println("Invalid Total Amount.");
+            return;
+        }
 
-                        if (!validDate(date)) {
-                            System.out.println("Invalid Payment Date.");
-                            break;
-                        }
+        bill = new Bill(status, date, amount);
 
-                        System.out.println("Enter Total Amount:");
-                        double amount = Double.parseDouble(scanner.nextLine());
+        if (billDAO.addBill(bill)) {
+            System.out.println("Bill added successfully.");
+        } else {
+            System.out.println("Bill could not be added.");
+        }
+    }
 
-                        if (!validAmount(amount)) {
-                            System.out.println("Invalid Total Amount.");
-                            break;
-                        }
+    // FIND BILL
+    public static void findBill() {
 
-                        Bill newBill = new Bill(status, date, amount);
+        System.out.print("Enter Bill ID: ");
 
-                        if (billDAO.addBill(newBill)) {
-                            System.out.println("Bill added successfully.");
-                        } else {
-                            System.out.println("Bill could not be added.");
-                        }
+        try {
+            billId = Integer.parseInt(scanner.nextLine());
 
-                        break;
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid Bill ID.");
+            return;
+        }
 
-                    // FIND BILL
-                    case 2:
+        if (!validBillId(billId)) {
+            System.out.println("Invalid Bill ID.");
+            return;
+        }
 
-                        System.out.println("Enter Bill ID:");
-                        int searchId = Integer.parseInt(scanner.nextLine());
+        bill = billDAO.findBillById(billId);
 
-                        if (!validBillId(searchId)) {
-                            System.out.println("Invalid Bill ID.");
-                            break;
-                        }
+        if (bill != null) {
+            displayBill(bill);
+        } else {
+            System.out.println("Bill not found.");
+        }
+    }
 
-                        Bill found = billDAO.findBillById(searchId);
+    // UPDATE BILL
+    public static void updateBill() {
 
-                        if (found != null) {
-                            displayBill(found);
-                        } else {
-                            System.out.println("Bill not found.");
-                        }
+        System.out.print("Enter Bill ID to update: ");
 
-                        break;
+        try {
+            billId = Integer.parseInt(scanner.nextLine());
 
-                    // UPDATE BILL
-                    case 3:
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid Bill ID.");
+            return;
+        }
 
-                        System.out.println("Enter Bill ID to update:");
-                        int updateId = Integer.parseInt(scanner.nextLine());
+        if (!validBillId(billId)) {
+            System.out.println("Invalid Bill ID.");
+            return;
+        }
 
-                        if (!validBillId(updateId)) {
-                            System.out.println("Invalid Bill ID.");
-                            break;
-                        }
+        bill = billDAO.findBillById(billId);
 
-                        Bill bill = billDAO.findBillById(updateId);
+        if (bill == null) {
+            System.out.println("Bill not found.");
+            return;
+        }
 
-                        if (bill == null) {
-                            System.out.println("Bill not found.");
-                            break;
-                        }
+        System.out.println("Enter Payment Status:");
+        String newStatus = scanner.nextLine();
 
-                        System.out.println("Enter Payment Status:");
-                        String newStatus = scanner.nextLine();
+        if (!validStatus(newStatus)) {
+            System.out.println("Invalid Payment Status.");
+            return;
+        }
 
-                        if (!validStatus(newStatus)) {
-                            System.out.println("Invalid Payment Status.");
-                            break;
-                        }
+        System.out.println("Enter Payment Date (DD/MM/YYYY):");
+        String newDate = scanner.nextLine();
 
-                        System.out.println("Enter Payment Date (DD/MM/YYYY):");
-                        String newDate = scanner.nextLine();
+        if (!validDate(newDate)) {
+            System.out.println("Invalid Payment Date.");
+            return;
+        }
 
-                        if (!validDate(newDate)) {
-                            System.out.println("Invalid Payment Date.");
-                            break;
-                        }
+        System.out.println("Enter Total Amount:");
 
-                        System.out.println("Enter Total Amount:");
-                        double newAmount = Double.parseDouble(scanner.nextLine());
+        double newAmount;
 
-                        if (!validAmount(newAmount)) {
-                            System.out.println("Invalid Total Amount.");
-                            break;
-                        }
+        try {
+            newAmount = Double.parseDouble(scanner.nextLine());
 
-                        bill.setPaymentStatus(newStatus);
-                        bill.setPaymentDate(newDate);
-                        bill.setTotalAmount(newAmount);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid Total Amount.");
+            return;
+        }
 
-                        if (billDAO.updateBill(bill)) {
-                            System.out.println("Bill updated successfully.");
-                        } else {
-                            System.out.println("Bill could not be updated.");
-                        }
+        if (!validAmount(newAmount)) {
+            System.out.println("Invalid Total Amount.");
+            return;
+        }
 
-                        break;
+        bill.setPaymentStatus(newStatus);
+        bill.setPaymentDate(newDate);
+        bill.setTotalAmount(newAmount);
 
-                    // DELETE BILL
-                    case 4:
+        if (billDAO.updateBill(bill)) {
+            System.out.println("Bill updated successfully.");
+        } else {
+            System.out.println("Bill could not be updated.");
+        }
+    }
 
-                        System.out.println("Enter Bill ID to delete:");
-                        int deleteId = Integer.parseInt(scanner.nextLine());
+    // DELETE BILL
+    public static void deleteBill() {
 
-                        if (!validBillId(deleteId)) {
-                            System.out.println("Invalid Bill ID.");
-                            break;
-                        }
+        System.out.print("Enter Bill ID to delete: ");
 
-                        if (billDAO.deleteBill(deleteId)) {
-                            System.out.println("Bill deleted successfully.");
-                        } else {
-                            System.out.println("Bill not found.");
-                        }
+        try {
+            billId = Integer.parseInt(scanner.nextLine());
 
-                        break;
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid Bill ID.");
+            return;
+        }
 
-                    // DISPLAY ALL BILLS
-                    case 5:
+        if (!validBillId(billId)) {
+            System.out.println("Invalid Bill ID.");
+            return;
+        }
 
-                        ArrayList<Bill> bills = billDAO.getAllBills();
+        if (billDAO.deleteBill(billId)) {
+            System.out.println("Bill deleted successfully.");
+        } else {
+            System.out.println("Bill not found.");
+        }
+    }
 
-                        if (bills.isEmpty()) {
-                            System.out.println("No bills found.");
-                        } else {
-                            for (Bill currentBill : bills) {
-                                displayBill(currentBill);
-                            }
-                        }
+    // DISPLAY ALL BILLS
+    public static void displayAllBills() {
 
-                        break;
+        ArrayList<Bill> bills = billDAO.getAllBills();
 
-                    // EXIT
-                    case 6:
+        if (bills.isEmpty()) {
+            System.out.println("No bills found.");
 
-                        System.out.println("Have a nice day!");
-                        break;
+        } else {
+            System.out.println("\n=== All Bills ===");
 
-                    default:
-
-                        System.out.println("Invalid option.");
-                }
-
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a number.");
+            for (Bill currentBill : bills) {
+                displayBill(currentBill);
             }
         }
     }
 
-    // Display bill
-    public void displayBill(Bill bill) {
+    // DISPLAY BILL
+    public static void displayBill(Bill bill) {
 
         System.out.println("\nBill ID: " + bill.getBillId());
         System.out.println("Payment Status: " + bill.getPaymentStatus());
         System.out.println("Payment Date: " + bill.getPaymentDate());
         System.out.println("Total Amount: " + bill.getTotalAmount());
+    }
+
+    // EXIT
+    public static boolean exit(boolean running) {
+
+        running = false;
+        System.out.println("Have a nice day!");
+
+        return running;
     }
 }

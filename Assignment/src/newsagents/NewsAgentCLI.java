@@ -145,8 +145,11 @@ public class NewsAgentCLI {
         System.out.println("Current details:");
         System.out.println(existing);
 
-        System.out.print("Enter new name: ");
+        scanner.nextLine();
+        
+        System.out.println("Enter new name: ");
         String name = scanner.nextLine();
+        
 
         System.out.print("Enter new address: ");
         String address = scanner.nextLine();

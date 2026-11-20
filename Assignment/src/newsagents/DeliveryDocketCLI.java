@@ -72,8 +72,9 @@ public class DeliveryDocketCLI {
          
          System.out.print("Order id: ");
          int orderId = scanner.nextInt();
+         scanner.nextLine();
 
-         System.out.print("Delivery Date (dd-mm-yyyy): ");
+         System.out.print("Delivery Date (dd/mm/yyyy): ");
          String deliveryDate = scanner.nextLine();
 
          System.out.print("Delivery Status: ");
@@ -120,6 +121,7 @@ public class DeliveryDocketCLI {
         	
         	System.out.print("New Order Id: ");
         	docket.setOrderId(scanner.nextInt());
+        	scanner.nextLine();
         	
             System.out.print("New Delivery Date (DD/MM/YYYY): ");
             docket.setDeliveryDate(scanner.nextLine());

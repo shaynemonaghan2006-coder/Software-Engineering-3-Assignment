@@ -59,8 +59,7 @@ public class PublicationCLI {
         System.out.println("3 - Update Publication");
         System.out.println("4 - Delete Publication");
         System.out.println("5 - View All Publications");
-        System.out.println("6 - Check & Reduce Stock");
-        System.out.println("7 - Exit");
+        System.out.println("6 - Exit");
         System.out.println();
 
         System.out.print("Option: ");
@@ -79,8 +78,8 @@ public class PublicationCLI {
         String name = scanner.nextLine();
 
         System.out.print("Price: ");
-        double price = scanner.nextDouble();
-        scanner.nextLine();
+        String price = scanner.nextLine();
+        
 
         System.out.print("Frequency: ");
         String frequency = scanner.nextLine();
@@ -138,8 +137,8 @@ public class PublicationCLI {
             publication.setPublicationName(scanner.nextLine());
 
             System.out.print("New Price: ");
-            publication.setPrice(scanner.nextDouble());
-            scanner.nextLine();
+            publication.setPrice(scanner.nextLine());
+           
 
             System.out.print("New Frequency: ");
             publication.setFrequency(scanner.nextLine());

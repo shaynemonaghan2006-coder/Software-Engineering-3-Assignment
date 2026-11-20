@@ -13,7 +13,7 @@ public class PublicationTest {
     @Test
     void validPublicationId_TC01() {
         Publication publication = new Publication(
-                1, "Daily News", 2.50, "Daily", "Newspaper", 100);
+                1, "Daily News", "2.50", "Daily", "Newspaper", 100);
         assertEquals(1, publication.getPublicationId());
     }
 
@@ -24,7 +24,7 @@ public class PublicationTest {
     @Test
     void validPublicationName_TC02() {
         Publication publication = new Publication(
-                1, "Daily News", 2.50, "Daily", "Newspaper", 100);
+                1, "Daily News", "2.50", "Daily", "Newspaper", 100);
         assertEquals("Daily News", publication.getPublicationName());
     }
 
@@ -35,8 +35,8 @@ public class PublicationTest {
     @Test
     void validPublicationPrice_TC03() {
         Publication publication = new Publication(
-                1, "Daily News", 2.50, "Daily", "Newspaper", 100);
-        assertEquals(2.50, publication.getPrice(), 0.001);
+                1, "Daily News", "2.50", "Daily", "Newspaper", 100);
+        assertEquals("2.50", publication.getPrice());
     }
 
     // TC04
@@ -46,7 +46,7 @@ public class PublicationTest {
     @Test
     void validPublicationFrequency_TC04() {
         Publication publication = new Publication(
-                1, "Daily News", 2.50, "Daily", "Newspaper", 100);
+                1, "Daily News", "2.50", "Daily", "Newspaper", 100);
         assertEquals("Daily", publication.getFrequency());
     }
 
@@ -57,7 +57,7 @@ public class PublicationTest {
     @Test
     void validPublicationType_TC05() {
         Publication publication = new Publication(
-                1, "Daily News", 2.50, "Daily", "Newspaper", 100);
+                1, "Daily News", "2.50", "Daily", "Newspaper", 100);
         assertEquals("Newspaper", publication.getType());
     }
 
@@ -68,7 +68,7 @@ public class PublicationTest {
     @Test
     void validStockQuantity_TC06() {
         Publication publication = new Publication(
-                1, "Daily News", 2.50, "Daily", "Newspaper", 100);
+                1, "Daily News", "2.50", "Daily", "Newspaper", 100);
         assertEquals(100, publication.getStockQuantity());
     }
 
@@ -79,7 +79,7 @@ public class PublicationTest {
     @Test
     void updatePublicationName_TC07() {
         Publication publication = new Publication(
-                1, "Daily News", 2.50, "Daily", "Newspaper", 100);
+                1, "Daily News", "2.50", "Daily", "Newspaper", 100);
         publication.setPublicationName("Sunday Magazine");
         assertEquals("Sunday Magazine", publication.getPublicationName());
     }
@@ -91,9 +91,9 @@ public class PublicationTest {
     @Test
     void updatePublicationPrice_TC08() {
         Publication publication = new Publication(
-                1, "Daily News", 2.50, "Daily", "Newspaper", 100);
-        publication.setPrice(3.00);
-        assertEquals(3.00, publication.getPrice(), 0.001);
+                1, "Daily News", "2.50", "Daily", "Newspaper", 100);
+        publication.setPrice("3.00");
+        assertEquals("3.00", publication.getPrice());
     }
 
     // TC09
@@ -102,8 +102,8 @@ public class PublicationTest {
     // Expected Output: 50
     @Test
     void updateStockQuantity_TC09() {
-        Publication publication = new Publication(
-                1, "Daily News", 2.50, "Daily", "Newspaper", 100);
+    	Publication publication = new Publication(
+                1, "Daily News", "2.50", "Daily", "Newspaper", 100);
         publication.setStockQuantity(50);
         assertEquals(50, publication.getStockQuantity());
     }
@@ -115,7 +115,7 @@ public class PublicationTest {
     @Test
     void readPublicationInfo_TC10() {
         Publication publication = new Publication(
-                1, "Daily News", 2.50, "Daily", "Newspaper", 100);
+                1, "Daily News", "2.50", "Daily", "Newspaper", 100);
 
         String details = publication.toString();
 
@@ -131,7 +131,7 @@ public class PublicationTest {
     @Test
     void verifyValidPublicationId_TC11() {
         Publication publication = new Publication(
-                1, "Daily News", 2.50, "Daily", "Newspaper", 100);
+                1, "Daily News", "2.50", "Daily", "Newspaper", 100);
         assertTrue(publication.verifyPublicationId(1));
     }
 
@@ -142,7 +142,7 @@ public class PublicationTest {
     @Test
     void verifyInvalidPublicationId_TC12() {
         Publication publication = new Publication(
-                1, "Daily News", 2.50, "Daily", "Newspaper", 100);
+                1, "Daily News", "2.50", "Daily", "Newspaper", 100);
         assertFalse(publication.verifyPublicationId(0));
     }
 
@@ -153,7 +153,7 @@ public class PublicationTest {
     @Test
     void verifyInvalidPublicationName_TC13() {
         Publication publication = new Publication(
-                1, "Daily News", 2.50, "Daily", "Newspaper", 100);
+                1, "Daily News", "2.50", "Daily", "Newspaper", 100);
         assertFalse(publication.verifyPublicationName(" "));
     }
 
@@ -164,8 +164,8 @@ public class PublicationTest {
     @Test
     void verifyInvalidPrice_TC14() {
         Publication publication = new Publication(
-                1, "Daily News", 2.50, "Daily", "Newspaper", 100);
-        assertFalse(publication.verifyPrice(-2.50));
+                1, "Daily News", "2.50", "Daily", "Newspaper", 100);
+        assertFalse(publication.verifyPrice("-2.50"));
     }
 
     // TC15
@@ -175,7 +175,7 @@ public class PublicationTest {
     @Test
     void verifyInvalidStockQuantity_TC15() {
         Publication publication = new Publication(
-                1, "Daily News", 2.50, "Daily", "Newspaper", 100);
+                1, "Daily News", "2.50", "Daily", "Newspaper", 100);
         assertFalse(publication.verifyStockQuantity(-10));
     }
 
@@ -186,7 +186,7 @@ public class PublicationTest {
     @Test
     void addStock_TC16() {
         Publication publication = new Publication(
-                1, "Daily News", 2.50, "Daily", "Newspaper", 100);
+                1, "Daily News", "2.50", "Daily", "Newspaper", 100);
 
         assertTrue(publication.addStock(20));
         assertEquals(120, publication.getStockQuantity());
@@ -199,7 +199,7 @@ public class PublicationTest {
     @Test
     void removeStock_TC17() {
         Publication publication = new Publication(
-                1, "Daily News", 2.50, "Daily", "Newspaper", 100);
+                1, "Daily News", "2.50", "Daily", "Newspaper", 100);
 
         assertTrue(publication.removeStock(30));
         assertEquals(70, publication.getStockQuantity());
@@ -212,7 +212,7 @@ public class PublicationTest {
     @Test
     void preventNegativeStock_TC18() {
         Publication publication = new Publication(
-                1, "Daily News", 2.50, "Daily", "Newspaper", 100);
+                1, "Daily News", "2.50", "Daily", "Newspaper", 100);
 
         assertFalse(publication.removeStock(150));
         assertEquals(100, publication.getStockQuantity());
@@ -225,7 +225,7 @@ public class PublicationTest {
     @Test
     void rejectZeroStockAddition_TC19() {
         Publication publication = new Publication(
-                1, "Daily News", 2.50, "Daily", "Newspaper", 100);
+                1, "Daily News", "2.50", "Daily", "Newspaper", 100);
 
         assertFalse(publication.addStock(0));
         assertEquals(100, publication.getStockQuantity());
@@ -238,7 +238,7 @@ public class PublicationTest {
     @Test
     void verifyInvalidPublicationType_TC20() {
         Publication publication = new Publication(
-                1, "Daily News", 2.50, "Daily", "Newspaper", 100);
+                1, "Daily News", "2.50", "Daily", "Newspaper", 100);
         assertFalse(publication.verifyType(" "));
     }
 }

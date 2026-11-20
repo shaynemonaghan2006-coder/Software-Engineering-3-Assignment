@@ -44,7 +44,20 @@ public class PublicationDAO {
                 && publication.verifyStockQuantity(
                         publication.getStockQuantity());
     }
+    
+    
+    public boolean updateStock(String name, int quantity) {
 
+        Publication p = findPublicationByName(name);
+
+        if (p == null || p.getStockQuantity() < quantity) {
+            return false;
+        }
+
+        p.setStockQuantity(p.getStockQuantity() - quantity);
+
+        return updatePublication(p);
+    }
     //Creates Publication
     public boolean addPublication(Publication publication) {
 
@@ -57,7 +70,7 @@ public class PublicationDAO {
                      conn.prepareStatement(INSERT_PUBLICATION)) {
 
             stmt.setString(1, publication.getPublicationName());
-            stmt.setDouble(2, publication.getPrice());
+            stmt.setString(2, publication.getPrice());
             stmt.setString(3, publication.getFrequency());
             stmt.setString(4, publication.getType());
             stmt.setInt(5, publication.getStockQuantity());
@@ -89,7 +102,7 @@ public class PublicationDAO {
                     return new Publication(
                             rs.getInt("publicationId"),
                             rs.getString("publicationName"),
-                            rs.getDouble("price"),
+                            rs.getString("price"),
                             rs.getString("frequency"),
                             rs.getString("type"),
                             rs.getInt("stockQuantity")
@@ -122,7 +135,7 @@ public class PublicationDAO {
                     return new Publication(
                             rs.getInt("publicationId"),
                             rs.getString("publicationName"),
-                            rs.getDouble("price"),
+                            rs.getString("price"),
                             rs.getString("frequency"),
                             rs.getString("type"),
                             rs.getInt("stockQuantity")
@@ -152,7 +165,7 @@ public class PublicationDAO {
                 Publication publication = new Publication(
                         rs.getInt("publicationId"),
                         rs.getString("publicationName"),
-                        rs.getDouble("price"),
+                        rs.getString("price"),
                         rs.getString("frequency"),
                         rs.getString("type"),
                         rs.getInt("stockQuantity")
@@ -182,7 +195,7 @@ public class PublicationDAO {
                      conn.prepareStatement(UPDATE_PUBLICATION)) {
 
             stmt.setString(1, publication.getPublicationName());
-            stmt.setDouble(2, publication.getPrice());
+            stmt.setString(2, publication.getPrice());
             stmt.setString(3, publication.getFrequency());
             stmt.setString(4, publication.getType());
             stmt.setInt(5, publication.getStockQuantity());

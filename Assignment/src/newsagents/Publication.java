@@ -5,12 +5,12 @@ public class Publication {
 
     private int publicationId;
     private String publicationName;
-    private double price;
+    private String price;
     private String frequency;
     private String type;
     private int stockQuantity;
 
-    public Publication(int publicationId, String publicationName, double price, String frequency, String type, int stockQuantity) {
+    public Publication(int publicationId, String publicationName, String price, String frequency, String type, int stockQuantity) {
         this.publicationId = publicationId;
         this.publicationName = publicationName;
         this.price = price;
@@ -36,11 +36,11 @@ public class Publication {
         this.publicationName = publicationName;
     }
 
-    public double getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice (String price) {
         this.price = price;
     }
 
@@ -77,8 +77,16 @@ public class Publication {
         return name != null && !name.trim().isEmpty();
     }
 
-    public boolean verifyPrice(double price) {
-        return Double.isFinite(price) && price >= 0;
+    public boolean verifyPrice(String string) {
+    	if (price == null || price.trim().isEmpty()) {
+			return false;
+		}
+
+		if (price.matches("\\d+\\.\\d{2}") && Double.parseDouble(price) > 0) {
+			return true;
+		}
+
+		return false;
     }
 
     public boolean verifyFrequency(String frequency) {
